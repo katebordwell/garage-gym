@@ -49,7 +49,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </header>
 <main><article id="doc">
 <h1>Garage Gym PRD</h1>
-<p>28 October 2026 · Kate Bordwell</p>
+<p>28 October 2026</p>
 <h2>Overview</h2>
 <p>Garage Gym helps a family of three plan each week's workouts around their sports, their goals and the kit in their home gym. It builds sessions from short follow-along video clips, shows what each new piece of kit would unlock, and spots when two people can train together. The hack day prototype is live at <a href="https://katebordwell.github.io/garage-gym/">katebordwell.github.io/garage-gym</a>.</p>
 <h2>Problem</h2>
@@ -73,26 +73,26 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </thead>
 <tbody>
 <tr>
-<td>Kate</td>
+<td>Mum</td>
 <td>Trail and hill running, conditioning</td>
 <td>Strava, Instagram saves</td>
 <td>Hello-world cats: retro 90s desktop</td>
 </tr>
 <tr>
-<td>Gary</td>
+<td>Dad</td>
 <td>Cycling, indoor and outdoor</td>
 <td>Zwift on the turbo trainer</td>
 <td>2010-era club cycling: black, white, a pink stripe</td>
 </tr>
 <tr>
-<td>Lucy, 14</td>
+<td>Kid, 14</td>
 <td>Competitive gymnastics</td>
 <td>Club training set by her coach</td>
-<td>Grown-up preppy: florals, gingham, soft pink and sage</td>
+<td>Grown-up preppy: florals, gingham, lilac, teal, yellow and green</td>
 </tr>
 </tbody>
 </table></div>
-<p>Kate and Lucy sometimes enjoy training together, so shared sessions matter.</p>
+<p>Mum and Kid sometimes enjoy training together, so shared sessions matter.</p>
 <h2>Goals and what good looks like</h2>
 <p>Good looks like a Sunday-night plan that takes minutes, sessions that fit the time and kit available, and a garage that fills up with kit that actually gets used.</p>
 <div class="tbl"><table>
@@ -152,8 +152,8 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </ul>
 <p><strong>Non-goals</strong></p>
 <ul>
-<li>Replacing Strava, Zwift or Lucy's club; Garage Gym is the family's planning and decision layer around them</li>
-<li>Coaching, training load or injury advice; Lucy's gymnastics training stays with her coach</li>
+<li>Replacing Strava, Zwift or Kid's club; Garage Gym is the family's planning and decision layer around them</li>
+<li>Coaching, training load or injury advice; Kid's gymnastics training stays with her coach</li>
 <li>Hosting or downloading other people's videos; the app links to them</li>
 <li>Buying kit inside the app</li>
 </ul>
@@ -161,7 +161,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <h3>Weekly planning</h3>
 <ul>
 <li>Each user plans Monday to Sunday, usually on a Sunday night.</li>
-<li>Entries have a day, a time slot (morning, lunchtime, evening) and a length.</li>
+<li>Entries have a day, a start time and a length.</li>
 <li>Entry types: garage session, run, turbo ride, outdoor ride, class or club, other.</li>
 <li>Garage sessions take a focus: core, legs and glutes, upper body, back, full body, mobility, power and cardio.</li>
 <li>Plans change on the day, so any entry can be edited, rebuilt or removed at the last minute.</li>
@@ -181,7 +181,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <h3>Follow-along player</h3>
 <ul>
 <li>Plays clips in order with progress, back and next.</li>
-<li>YouTube clips embed; Instagram clips open in Instagram.</li>
+<li>YouTube and Instagram clips open in their own apps; playing them inside Garage Gym comes later.</li>
 </ul>
 <h3>Kit tracker</h3>
 <ul>
@@ -198,7 +198,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </ul>
 <h3>Train together</h3>
 <ul>
-<li>When two or more people plan garage sessions in the same day and slot, the app offers a shared session.</li>
+<li>When two or more people plan garage sessions on the same day at overlapping times, the app offers a shared session.</li>
 <li>One person leads and picks the focus; the others join the same clips.</li>
 <li>Shared sessions prefer clips tagged as good to do together.</li>
 <li>Only the leader can change a shared session.</li>
@@ -218,7 +218,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <ul>
 <li>Each owned item has a quantity, starting at 1. Each person needs their own piece unless the item is shareable, such as the TV.</li>
 <li>Every planned session books the kit its clips use; a Zwift ride books the bike.</li>
-<li>The week flags clashes, such as "Bike in use by Gary 06:30–07:30". Sessions leave out kit that is booked, or that there isn't enough of for everyone, and say what was left out.</li>
+<li>The week flags clashes, such as "Bike in use by Dad 06:30–07:30". Sessions leave out kit that is booked, or that there isn't enough of for everyone, and say what was left out.</li>
 </ul>
 <h3>Prioritising purchases</h3>
 <ul>
@@ -244,7 +244,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <li>A 4-digit PIN per person stops others switching into their view on the same device. It is a convenience, not security.</li>
 </ul>
 <h2>Content model</h2>
-<p>The building block is a short follow-along clip, ideally 30 seconds to 5 minutes, like the Instagram videos Kate already saves. Short clips are what make sessions flexible.</p>
+<p>The building block is a short follow-along clip, ideally 30 seconds to 5 minutes, like the Instagram videos Mum already saves. Short clips are what make sessions flexible.</p>
 <div class="tbl"><table>
 <thead>
 <tr>
@@ -296,7 +296,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </tr>
 </tbody>
 </table></div>
-<p>The prototype starts with 33 clips: 5 of Kate's Instagram saves, tagged from screenshots, and 28 YouTube follow-alongs. Sources are mixed on purpose, since tagged content Kate doesn't know about yet is part of the value.</p>
+<p>The prototype starts with 33 clips: 5 of Mum's Instagram saves, tagged from screenshots, and 28 YouTube follow-alongs. Sources are mixed on purpose, since tagged content Mum doesn't know about yet is part of the value.</p>
 <h2>Platforms and design</h2>
 <p>Phone first, then laptop and iPad, and eventually a TV in the garage.</p>
 <ul>
@@ -315,19 +315,19 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </thead>
 <tbody>
 <tr>
-<td>Kate: hello-world cats</td>
+<td>Mum: hello-world cats</td>
 <td>90s desktop windows, teal dotted background, pixel fonts, pink and yellow accents</td>
 <td>Matches the hack day cat site</td>
 </tr>
 <tr>
-<td>Gary: club cycling</td>
+<td>Dad: club cycling</td>
 <td>Black, white, one pink stripe, condensed caps, serif italic</td>
 <td>Inspired by 2010-era cycling style; no third-party logos or branding</td>
 </tr>
 <tr>
-<td>Lucy: grown-up preppy</td>
-<td>Ditsy florals, gingham, soft pink and sage, serif italic headings</td>
-<td>Lucy is 14, so florals over smileys and nothing babyish</td>
+<td>Kid: grown-up preppy</td>
+<td>Ditsy florals, teal gingham, lilac with yellow and green, serif italic headings</td>
+<td>Kid is 14, so florals over smileys and nothing babyish</td>
 </tr>
 </tbody>
 </table></div>
@@ -344,12 +344,12 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <tbody>
 <tr>
 <td>Strava</td>
-<td>Pull Kate's runs and Gary's outdoor rides into the week</td>
+<td>Pull Mum's runs and Dad's outdoor rides into the week</td>
 <td>Needs each person to sign in and a server to hold access</td>
 </tr>
 <tr>
 <td>Zwift</td>
-<td>Pull Gary's turbo sessions into the week</td>
+<td>Pull Dad's turbo sessions into the week</td>
 <td>Same sign-in and server need as Strava</td>
 </tr>
 <tr>
@@ -359,8 +359,8 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </tr>
 <tr>
 <td>YouTube</td>
-<td>Search and embed short follow-alongs</td>
-<td>Some creators block embedding; the app falls back to opening YouTube</td>
+<td>Search short follow-alongs, and later play them inside the app</td>
+<td>Some creators block embedding, so the app opens YouTube instead</td>
 </tr>
 <tr>
 <td>Shared family data</td>
@@ -380,7 +380,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </ul>
 <p><strong>Open questions</strong></p>
 <ul>
-<li class="task"><input type="checkbox" disabled aria-label="Open item"> How should Lucy's gymnastics training, set by her coach, shape what the app suggests for her?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> How should Kid's gymnastics training, set by her coach, shape what the app suggests for her?</li>
 <li class="task"><input type="checkbox" disabled aria-label="Open item"> Should the app track completed sessions, or is planning enough?</li>
 <li class="task"><input type="checkbox" disabled aria-label="Open item"> Do we have a barbell, or were the barbells the hand weights?</li>
 <li class="task"><input type="checkbox" disabled aria-label="Open item"> Which details matter per kit item: dumbbell weights, band strengths, trampoline size?</li>
@@ -403,7 +403,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <tbody>
 <tr>
 <td>Now</td>
-<td>Favourite sessions, e.g. "Kate's 15-minute core" or "Gary's post-ride mobility"</td>
+<td>Favourite sessions, e.g. "Mum's 15-minute core" or "Dad's post-ride mobility"</td>
 <td>Reuse a session in one tap instead of rebuilding it</td>
 </tr>
 <tr>
@@ -439,7 +439,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <tr>
 <td>Next</td>
 <td>Train alongside: same time, different focus</td>
-<td>Kate and Lucy can share the garage without the same workout</td>
+<td>Mum and Kid can share the garage without the same workout</td>
 </tr>
 <tr>
 <td>Next</td>
@@ -469,7 +469,7 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 </tbody>
 </table></div>
 <h2>Research priorities</h2>
-<p>The most valuable next step is watching Gary and Lucy plan a real week, before building more on their behalf.</p>
+<p>The most valuable next step is watching Dad and Kid plan a real week, before building more on their behalf.</p>
 <div class="tbl"><table>
 <thead>
 <tr>
@@ -484,25 +484,25 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <td>Now</td>
 <td>Where do people hesitate when planning a real week?</td>
 <td>Each plans next week in the app while thinking aloud</td>
-<td>Gary, Lucy, Kate</td>
+<td>Dad, Kid, Mum</td>
 </tr>
 <tr>
 <td>Now</td>
 <td>What would each of us open the app for?</td>
 <td>Short separate conversations</td>
-<td>Gary, Lucy</td>
+<td>Dad, Kid</td>
 </tr>
 <tr>
 <td>Now</td>
 <td>How should the app sit alongside coach-led gymnastics without feeling like another coach?</td>
-<td>Conversation, led by what Lucy enjoys</td>
-<td>Lucy</td>
+<td>Conversation, led by what Kid enjoys</td>
+<td>Kid</td>
 </tr>
 <tr>
 <td>Next</td>
 <td>Does adding and tagging clips stick?</td>
 <td>Two weeks of real use, counting clips added and tagged</td>
-<td>Kate</td>
+<td>Mum</td>
 </tr>
 <tr>
 <td>Next</td>
@@ -520,19 +520,19 @@ footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left
 <td>Later</td>
 <td>When and why do we train together?</td>
 <td>Diary of shared sessions over a month</td>
-<td>Kate, Lucy</td>
+<td>Mum, Kid</td>
 </tr>
 </tbody>
 </table></div>
 <h2>Hack day demo script</h2>
-<p>Two minutes, starting on Kate's Week tab. The story: one family, three sports, a garage gym to fill, built in a morning with Claude.</p>
+<p>Two minutes, starting on Mum's Week tab. The story: one family, three sports, a garage gym to fill, built in a morning with Claude.</p>
 <ol>
 <li><strong>Hook (15 sec):</strong> we're moving and planning a garage gym. Three people, three sports, workouts scattered across Instagram, Strava and Zwift, and no idea what to buy first.</li>
-<li><strong>Plan the week (25 sec):</strong> show runs, a Zwift ride and garage sessions with real times. Point out the clash: Kate wants the bike at 07:00 but Gary has it until 07:30. Open a garage session and tap Shuffle all.</li>
-<li><strong>Train together (20 sec):</strong> tap the Lucy banner and choose Lucy to lead. We only own one of everything, so it leaves out kit we'd have to share, which tells us what to buy.</li>
+<li><strong>Plan the week (25 sec):</strong> show runs, a Zwift ride and garage sessions with real times. Point out the clash: Mum wants the bike at 07:00 but Dad has it until 07:30. Open a garage session and tap Shuffle all.</li>
+<li><strong>Train together (20 sec):</strong> tap the Kid banner and choose Kid to lead. We only own one of everything, so it leaves out kit we'd have to share, which tells us what to buy.</li>
 <li><strong>Shop (30 sec):</strong> show the Top priorities pictures, the votes and the reasons behind each ranking. Tap We bought it! on the kettlebell: 3 new videos unlocked.</li>
-<li><strong>Rewards (20 sec):</strong> mark a session done for +20 points, then open Rewards to see the race chart. The winner picks Saturday dinner and every point fills the kit jar.</li>
-<li><strong>Ending (10 sec):</strong> switch to Gary, then Lucy, so the whole app changes style. Same app, three personalities.</li>
+<li><strong>Rewards (20 sec):</strong> mark a session done for +10 points, then open Rewards to see the race chart. The winner picks Saturday dinner and every point fills the kit jar.</li>
+<li><strong>Ending (10 sec):</strong> switch to Dad, then Kid, so the whole app changes style. Same app, three personalities.</li>
 </ol>
 <p><strong>Before going on</strong></p>
 <ul>

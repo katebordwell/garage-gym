@@ -1,6 +1,6 @@
 # Garage Gym PRD
 
-28 October 2026 · Kate Bordwell
+28 October 2026
 
 ## Overview
 
@@ -21,11 +21,11 @@ Each person plans their own week, with their own preferences and their own look 
 
 | User | Main sports | Tools today | Theme |
 | --- | --- | --- | --- |
-| Kate | Trail and hill running, conditioning | Strava, Instagram saves | Hello-world cats: retro 90s desktop |
-| Gary | Cycling, indoor and outdoor | Zwift on the turbo trainer | 2010-era club cycling: black, white, a pink stripe |
-| Lucy, 14 | Competitive gymnastics | Club training set by her coach | Grown-up preppy: florals, gingham, soft pink and sage |
+| Mum | Trail and hill running, conditioning | Strava, Instagram saves | Hello-world cats: retro 90s desktop |
+| Dad | Cycling, indoor and outdoor | Zwift on the turbo trainer | 2010-era club cycling: black, white, a pink stripe |
+| Kid, 14 | Competitive gymnastics | Club training set by her coach | Grown-up preppy: florals, gingham, lilac, teal, yellow and green |
 
-Kate and Lucy sometimes enjoy training together, so shared sessions matter.
+Mum and Kid sometimes enjoy training together, so shared sessions matter.
 
 ## Goals and what good looks like
 
@@ -65,8 +65,8 @@ The hack day prototype shows the whole journey, with the kit and content feature
 
 **Non-goals**
 
-- Replacing Strava, Zwift or Lucy's club; Garage Gym is the family's planning and decision layer around them
-- Coaching, training load or injury advice; Lucy's gymnastics training stays with her coach
+- Replacing Strava, Zwift or Kid's club; Garage Gym is the family's planning and decision layer around them
+- Coaching, training load or injury advice; Kid's gymnastics training stays with her coach
 - Hosting or downloading other people's videos; the app links to them
 - Buying kit inside the app
 
@@ -75,7 +75,7 @@ The hack day prototype shows the whole journey, with the kit and content feature
 ### Weekly planning
 
 - Each user plans Monday to Sunday, usually on a Sunday night.
-- Entries have a day, a time slot (morning, lunchtime, evening) and a length.
+- Entries have a day, a start time and a length.
 - Entry types: garage session, run, turbo ride, outdoor ride, class or club, other.
 - Garage sessions take a focus: core, legs and glutes, upper body, back, full body, mobility, power and cardio.
 - Plans change on the day, so any entry can be edited, rebuilt or removed at the last minute.
@@ -94,7 +94,7 @@ The hack day prototype shows the whole journey, with the kit and content feature
 ### Follow-along player
 
 - Plays clips in order with progress, back and next.
-- YouTube clips embed; Instagram clips open in Instagram.
+- YouTube and Instagram clips open in their own apps; playing them inside Garage Gym comes later.
 
 ### Kit tracker
 
@@ -111,7 +111,7 @@ The hack day prototype shows the whole journey, with the kit and content feature
 
 ### Train together
 
-- When two or more people plan garage sessions in the same day and slot, the app offers a shared session.
+- When two or more people plan garage sessions on the same day at overlapping times, the app offers a shared session.
 - One person leads and picks the focus; the others join the same clips.
 - Shared sessions prefer clips tagged as good to do together.
 - Only the leader can change a shared session.
@@ -131,7 +131,7 @@ The hack day prototype shows the whole journey, with the kit and content feature
 
 - Each owned item has a quantity, starting at 1. Each person needs their own piece unless the item is shareable, such as the TV.
 - Every planned session books the kit its clips use; a Zwift ride books the bike.
-- The week flags clashes, such as "Bike in use by Gary 06:30–07:30". Sessions leave out kit that is booked, or that there isn't enough of for everyone, and say what was left out.
+- The week flags clashes, such as "Bike in use by Dad 06:30–07:30". Sessions leave out kit that is booked, or that there isn't enough of for everyone, and say what was left out.
 
 ### Prioritising purchases
 
@@ -158,7 +158,7 @@ The hack day prototype shows the whole journey, with the kit and content feature
 
 ## Content model
 
-The building block is a short follow-along clip, ideally 30 seconds to 5 minutes, like the Instagram videos Kate already saves. Short clips are what make sessions flexible.
+The building block is a short follow-along clip, ideally 30 seconds to 5 minutes, like the Instagram videos Mum already saves. Short clips are what make sessions flexible.
 
 | Field | Example | Used for |
 | --- | --- | --- |
@@ -171,7 +171,7 @@ The building block is a short follow-along clip, ideally 30 seconds to 5 minutes
 | Together | Yes | Shared sessions |
 | Location | Garden | Leaving out garden kit unless chosen |
 
-The prototype starts with 33 clips: 5 of Kate's Instagram saves, tagged from screenshots, and 28 YouTube follow-alongs. Sources are mixed on purpose, since tagged content Kate doesn't know about yet is part of the value.
+The prototype starts with 33 clips: 5 of Mum's Instagram saves, tagged from screenshots, and 28 YouTube follow-alongs. Sources are mixed on purpose, since tagged content Mum doesn't know about yet is part of the value.
 
 ## Platforms and design
 
@@ -185,9 +185,9 @@ Each user picks a theme, and switching user switches the whole app.
 
 | Theme | Look | Notes |
 | --- | --- | --- |
-| Kate: hello-world cats | 90s desktop windows, teal dotted background, pixel fonts, pink and yellow accents | Matches the hack day cat site |
-| Gary: club cycling | Black, white, one pink stripe, condensed caps, serif italic | Inspired by 2010-era cycling style; no third-party logos or branding |
-| Lucy: grown-up preppy | Ditsy florals, gingham, soft pink and sage, serif italic headings | Lucy is 14, so florals over smileys and nothing babyish |
+| Mum: hello-world cats | 90s desktop windows, teal dotted background, pixel fonts, pink and yellow accents | Matches the hack day cat site |
+| Dad: club cycling | Black, white, one pink stripe, condensed caps, serif italic | Inspired by 2010-era cycling style; no third-party logos or branding |
+| Kid: grown-up preppy | Ditsy florals, teal gingham, lilac with yellow and green, serif italic headings | Kid is 14, so florals over smileys and nothing babyish |
 
 ## Integrations and data
 
@@ -195,10 +195,10 @@ The biggest build after the hack day is shared data, so all three phones see the
 
 | Integration | What it would do | Constraint |
 | --- | --- | --- |
-| Strava | Pull Kate's runs and Gary's outdoor rides into the week | Needs each person to sign in and a server to hold access |
-| Zwift | Pull Gary's turbo sessions into the week | Same sign-in and server need as Strava |
+| Strava | Pull Mum's runs and Dad's outdoor rides into the week | Needs each person to sign in and a server to hold access |
+| Zwift | Pull Dad's turbo sessions into the week | Same sign-in and server need as Strava |
 | Instagram saved posts | Bring in saved videos automatically | Instagram doesn't let other apps read saved posts, so clips are added by pasting links or screenshots |
-| YouTube | Search and embed short follow-alongs | Some creators block embedding; the app falls back to opening YouTube |
+| YouTube | Search short follow-alongs, and later play them inside the app | Some creators block embedding, so the app opens YouTube instead |
 | Shared family data | Same plans, kit and shared sessions on every device | The prototype saves to each browser only; needs a small backend and family sign-in |
 
 Plans include a 14-year-old's schedule, so family data stays private to the family and isn't shared publicly.
@@ -214,7 +214,7 @@ Plans include a 14-year-old's schedule, so family data stays private to the fami
 
 **Open questions**
 
-- [ ] How should Lucy's gymnastics training, set by her coach, shape what the app suggests for her?
+- [ ] How should Kid's gymnastics training, set by her coach, shape what the app suggests for her?
 - [ ] Should the app track completed sessions, or is planning enough?
 - [ ] Do we have a barbell, or were the barbells the hand weights?
 - [ ] Which details matter per kit item: dumbbell weights, band strengths, trampoline size?
@@ -230,14 +230,14 @@ The next build should make planning lighter and clip capture effortless before a
 
 | Priority | Item | Why |
 | --- | --- | --- |
-| Now | Favourite sessions, e.g. "Kate's 15-minute core" or "Gary's post-ride mobility" | Reuse a session in one tap instead of rebuilding it |
+| Now | Favourite sessions, e.g. "Mum's 15-minute core" or "Dad's post-ride mobility" | Reuse a session in one tap instead of rebuilding it |
 | Now | Starting points: build around a saved clip, repeat a favourite, or surprise me | Fewer decisions on a Sunday night |
 | Now | Take turns with kit, e.g. "one kettlebell, take turns" | Shared sessions are thin when we only own one of everything |
 | Now | "Save for when we have this kit" | Shopping list reflects clips we actually want, not just clip counts |
 | Now | Real links and checked lengths for the starter clips | Instagram entries point to profiles; some lengths are estimates |
 | Next | "I only have 10 minutes" quick session | Fits a changed day without replanning |
 | Next | Invitations based on when people are free, e.g. "Fancy 15 minutes together on Thursday?" | Makes training together an invitation, not just a clash |
-| Next | Train alongside: same time, different focus | Kate and Lucy can share the garage without the same workout |
+| Next | Train alongside: same time, different focus | Mum and Kid can share the garage without the same workout |
 | Next | Different home screen per person | Each person opens the app for a different reason; test first |
 | Later | Family sign-in and private shared storage across devices | Needed for real use; must work for a 14-year-old |
 | Later | Strava and Zwift sync | Runs and rides appear without retyping |
@@ -246,28 +246,28 @@ The next build should make planning lighter and clip capture effortless before a
 
 ## Research priorities
 
-The most valuable next step is watching Gary and Lucy plan a real week, before building more on their behalf.
+The most valuable next step is watching Dad and Kid plan a real week, before building more on their behalf.
 
 | Priority | Question | Method | With |
 | --- | --- | --- | --- |
-| Now | Where do people hesitate when planning a real week? | Each plans next week in the app while thinking aloud | Gary, Lucy, Kate |
-| Now | What would each of us open the app for? | Short separate conversations | Gary, Lucy |
-| Now | How should the app sit alongside coach-led gymnastics without feeling like another coach? | Conversation, led by what Lucy enjoys | Lucy |
-| Next | Does adding and tagging clips stick? | Two weeks of real use, counting clips added and tagged | Kate |
+| Now | Where do people hesitate when planning a real week? | Each plans next week in the app while thinking aloud | Dad, Kid, Mum |
+| Now | What would each of us open the app for? | Short separate conversations | Dad, Kid |
+| Now | How should the app sit alongside coach-led gymnastics without feeling like another coach? | Conversation, led by what Kid enjoys | Kid |
+| Next | Does adding and tagging clips stick? | Two weeks of real use, counting clips added and tagged | Mum |
 | Next | Does competition help or add pressure? | Two weeks with the race, two with jar and goals only, then a debrief | Family |
 | Next | Do we trust the shopping list's ranking? | Rank the top 10 ourselves, then compare with the app | Family |
-| Later | When and why do we train together? | Diary of shared sessions over a month | Kate, Lucy |
+| Later | When and why do we train together? | Diary of shared sessions over a month | Mum, Kid |
 
 ## Hack day demo script
 
-Two minutes, starting on Kate's Week tab. The story: one family, three sports, a garage gym to fill, built in a morning with Claude.
+Two minutes, starting on Mum's Week tab. The story: one family, three sports, a garage gym to fill, built in a morning with Claude.
 
 1. **Hook (15 sec):** we're moving and planning a garage gym. Three people, three sports, workouts scattered across Instagram, Strava and Zwift, and no idea what to buy first.
-2. **Plan the week (25 sec):** show runs, a Zwift ride and garage sessions with real times. Point out the clash: Kate wants the bike at 07:00 but Gary has it until 07:30. Open a garage session and tap Shuffle all.
-3. **Train together (20 sec):** tap the Lucy banner and choose Lucy to lead. We only own one of everything, so it leaves out kit we'd have to share, which tells us what to buy.
+2. **Plan the week (25 sec):** show runs, a Zwift ride and garage sessions with real times. Point out the clash: Mum wants the bike at 07:00 but Dad has it until 07:30. Open a garage session and tap Shuffle all.
+3. **Train together (20 sec):** tap the Kid banner and choose Kid to lead. We only own one of everything, so it leaves out kit we'd have to share, which tells us what to buy.
 4. **Shop (30 sec):** show the Top priorities pictures, the votes and the reasons behind each ranking. Tap We bought it! on the kettlebell: 3 new videos unlocked.
-5. **Rewards (20 sec):** mark a session done for +20 points, then open Rewards to see the race chart. The winner picks Saturday dinner and every point fills the kit jar.
-6. **Ending (10 sec):** switch to Gary, then Lucy, so the whole app changes style. Same app, three personalities.
+5. **Rewards (20 sec):** mark a session done for +10 points, then open Rewards to see the race chart. The winner picks Saturday dinner and every point fills the kit jar.
+6. **Ending (10 sec):** switch to Dad, then Kid, so the whole app changes style. Same app, three personalities.
 
 **Before going on**
 

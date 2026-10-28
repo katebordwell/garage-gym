@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Garage Gym</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bagel+Fat+One&family=VT323&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Libre+Caslon+Text:ital@1&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+/* ============ THEME TOKENS ============
+   One app, three skins. Each person's theme sets the tokens below.
+   kate = hello-world cats (90s desktop) · gary = 2010 club-cycling · lucy = grown-up preppy */
+:root{color-scheme:light}
+:root,body[data-user="kate"]{
+  --bg:#2a8c86; --bgimg:radial-gradient(#237770 1.5px,transparent 1.6px); --bgsize:18px 18px;
+  --card:#fff; --ink:#1d1838; --muted:#5a5478; --line:#1d1838; --soft:#eef4ff;
+  --accent:#ff8fb1; --accent-ink:#1d1838; --accent2:#ffd23f; --chrome:#cbc4ee;
+  --radius:6px; --bw:3px; --shadow:5px 5px 0 #1d1838; --btn-shadow:3px 3px 0 #1d1838;
+  --head:"Bagel Fat One","Arial Black",sans-serif; --head-w:400; --head-tt:none; --head-ls:0;
+  --body:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --label:"VT323",ui-monospace,monospace; --label-size:20px; --label-tt:none; --label-ls:0;
+  --nav-bg:#fff; --on-bg:#fff;
+}
+body[data-user="gary"]{
+  --bg:#efede8; --bgimg:none; --bgsize:auto;
+  --card:#fff; --ink:#111; --muted:#5f5f5f; --line:#111; --soft:#f5f4f1;
+  --accent:#e8417f; --accent-ink:#fff; --accent2:#111; --chrome:#111;
+  --radius:0px; --bw:1.5px; --shadow:none; --btn-shadow:none;
+  --head:"Barlow Condensed","Arial Narrow",sans-serif; --head-w:700; --head-tt:uppercase; --head-ls:.06em;
+  --body:"Barlow",system-ui,sans-serif;
+  --label:"Barlow Condensed","Arial Narrow",sans-serif; --label-size:15px; --label-tt:uppercase; --label-ls:.14em;
+  --nav-bg:#111; --on-bg:#111;
+}
+body[data-user="lucy"]{
+  --bg:#faf8f2;
+  --bgimg:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none'%3E%3Cg transform='translate(24 26)'%3E%3Cg fill='%23dccff3'%3E%3Ccircle cx='0' cy='-6' r='5'/%3E%3Ccircle cx='6' cy='0' r='5'/%3E%3Ccircle cx='0' cy='6' r='5'/%3E%3Ccircle cx='-6' cy='0' r='5'/%3E%3C/g%3E%3Ccircle r='3' fill='%23f7e3a8'/%3E%3C/g%3E%3Cg transform='translate(84 82)'%3E%3Cg fill='%23bfe4df'%3E%3Ccircle cx='0' cy='-5' r='4'/%3E%3Ccircle cx='5' cy='0' r='4'/%3E%3Ccircle cx='0' cy='5' r='4'/%3E%3Ccircle cx='-5' cy='0' r='4'/%3E%3C/g%3E%3Ccircle r='2.4' fill='%23fff'/%3E%3C/g%3E%3Cpath d='M86 30 q6 -6 12 0' stroke='%23c6dfb9' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M22 92 q5 -5 10 0' stroke='%23f2dc8c' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+  --bgsize:120px 120px;
+  --card:#fffefb; --ink:#2b3553; --muted:#666c86; --line:#d6cbec; --soft:#f2eefa;
+  --accent:#7f68c4; --accent-ink:#fff; --accent2:#7cc6bd; --chrome:#f2eefa;
+  --radius:18px; --bw:1.5px; --shadow:0 6px 18px rgba(43,53,83,.08); --btn-shadow:none;
+  --head:"Playfair Display",Georgia,serif; --head-w:500; --head-tt:none; --head-ls:0;
+  --body:"DM Sans",system-ui,sans-serif;
+  --label:"DM Sans",system-ui,sans-serif; --label-size:13px; --label-tt:uppercase; --label-ls:.16em;
+  --nav-bg:#fffdfa; --on-bg:#2b3553;
+}
+
+/* ============ BASE ============ */
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);background-image:var(--bgimg);background-size:var(--bgsize);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;min-height:100vh;
+  padding:0 max(16px,env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));transition:background-color .3s}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:820px;margin:0 auto;display:grid;gap:20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ============ HEADER ============ */
+header.top{max-width:820px;margin:0 auto;padding:20px 0 16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.brand{flex:1;min-width:200px}
+.brand .name{font-family:var(--head);font-weight:var(--head-w);text-transform:var(--head-tt);letter-spacing:var(--head-ls);font-size:clamp(30px,7vw,44px);line-height:1;margin:0}
+.brand .tag{font-family:var(--label);font-size:var(--label-size);text-transform:var(--label-tt);letter-spacing:var(--label-ls);margin-top:6px;opacity:.85}
+.who{display:flex;gap:6px;padding:4px;border:var(--bw) solid var(--line);background:var(--card);border-radius:calc(var(--radius) + 6px);box-shadow:var(--btn-shadow)}
+.who button{border:0;background:transparent;color:var(--ink);padding:7px 14px;border-radius:var(--radius);font-weight:700;font-size:15px}
+.who button .lk{width:11px;height:11px;margin-left:4px;vertical-align:-1px;fill:currentColor;opacity:.7}
+.who button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+body[data-user="kate"] header.top{color:#fff}
+body[data-user="kate"] .brand .name{color:#fff;text-shadow:3px 3px 0 #1d1838}
+body[data-user="gary"] header.top{background:#111;color:#fff;margin:0 calc(-1 * max(16px,env(safe-area-inset-left)));max-width:none;padding:20px max(16px,env(safe-area-inset-left)) 22px;position:relative}
+body[data-user="gary"] header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:var(--accent)}
+body[data-user="gary"] header.top > *{max-width:820px}
+body[data-user="gary"] .hdr-in{max-width:820px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+body[data-user="gary"] .brand .tag{font-family:"Libre Caslon Text",Georgia,serif;font-style:italic;text-transform:none;letter-spacing:0;font-size:16px;color:#cfcfcf}
+body[data-user="gary"] .who{background:#111;border-color:#fff}
+body[data-user="gary"] .who button{color:#fff;letter-spacing:.08em;text-transform:uppercase;font-family:var(--label);font-size:15px}
+body[data-user="lucy"] .brand .name{font-style:italic}
+body[data-user="lucy"] .brand .name::after{content:" ✿";color:#e3c24e;font-style:normal;font-size:.7em}
+.hdr-in{display:contents}
+#overlaps{display:grid;gap:12px}
+#overlaps:empty{display:none}
+body[data-user="gary"] .wrap{padding-top:22px}
+
+/* ============ CARDS ============ */
+.card{background:var(--card);border:var(--bw) solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;min-width:0}
+.card-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;font-family:var(--label);font-size:var(--label-size);text-transform:var(--label-tt);letter-spacing:var(--label-ls);border-bottom:var(--bw) solid var(--line);background:var(--chrome)}
+.card-bar .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-bar .btns{display:none;gap:5px}
+body[data-user="kate"] .card-bar .btns{display:flex}
+.btns i{width:13px;height:13px;border:2.5px solid #1d1838;background:#fff;border-radius:2px}.btns i:last-child{background:#ff8fb1}
+body[data-user="gary"] .card-bar{background:#fff;color:#111;border-bottom:1.5px solid #111;font-weight:700}
+body[data-user="gary"] .card-bar::before{content:"";width:22px;height:4px;background:var(--accent);flex:none}
+body[data-user="lucy"] .card-bar{background:repeating-linear-gradient(90deg,rgba(124,198,189,.2) 0 10px,transparent 10px 20px),repeating-linear-gradient(0deg,rgba(124,198,189,.2) 0 10px,transparent 10px 20px),#fff;color:var(--ink);border-bottom-color:var(--line);font-weight:700}
+.card-body{padding:16px}
+h2{font-family:var(--head);font-weight:var(--head-w);text-transform:var(--head-tt);letter-spacing:var(--head-ls);font-size:clamp(24px,5vw,32px);line-height:1.05;margin:0 0 4px}
+body[data-user="lucy"] h2{font-style:italic}
+h3{font-family:var(--head);font-weight:var(--head-w);text-transform:var(--head-tt);letter-spacing:var(--head-ls);font-size:21px;line-height:1.1;margin:0}
+body[data-user="lucy"] h3{font-weight:600}
+.muted{color:var(--muted)}
+.lede{color:var(--muted);margin:0}
+body[data-user="kate"] .intro h2,body[data-user="kate"] .intro .lede{color:#fff}
+body[data-user="kate"] .intro .lede{color:#e6fffb}
+body[data-user="kate"] .intro h2{text-shadow:2px 2px 0 #1d1838}
+
+/* ============ BUTTONS & CHIPS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:8px 16px;border:var(--bw) solid var(--line);border-radius:calc(var(--radius) + 2px);background:var(--card);font-weight:700;box-shadow:var(--btn-shadow);text-decoration:none;color:var(--ink);transition:transform .08s}
+.btn:active{transform:translate(1px,1px)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--line)}
+body[data-user="gary"] .btn{text-transform:uppercase;letter-spacing:.1em;font-family:var(--label);font-size:15px;font-weight:700}
+body[data-user="gary"] .btn.primary{background:#111;color:#fff;border-color:#111;box-shadow:inset 0 -4px 0 var(--accent)}
+body[data-user="lucy"] .btn{border-radius:999px;border-color:var(--accent)}
+.btn.sm{min-height:34px;padding:4px 12px;font-size:14px}
+.btn.ghost{background:transparent;box-shadow:none}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:999px;font-size:13px;font-weight:700;background:var(--soft);border:1px solid color-mix(in srgb,var(--line) 35%,transparent);white-space:nowrap}
+.chip.have{background:color-mix(in srgb,var(--accent2) 22%,#fff)}
+.chip.need{background:#fff;border-style:dashed;color:var(--muted)}
+.chip.together{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.chip.src{background:transparent}
+body[data-user="gary"] .chip{border-radius:0;text-transform:uppercase;letter-spacing:.08em;font-family:var(--label);font-size:13px}
+body[data-user="gary"] .chip.have{background:#111;color:#fff}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:var(--bw) solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+body[data-user="gary"] .seg button{border-radius:0;text-transform:uppercase;letter-spacing:.08em;font-family:var(--label)}
+body[data-user="kate"] .seg button{border-radius:var(--radius)}
+
+/* ============ WEEK ============ */
+.days{display:grid;gap:14px}
+.day .card-body{display:grid;gap:10px;padding:12px 14px 14px}
+.entry{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--line) 40%,transparent);border-radius:calc(var(--radius) + 2px);background:var(--soft)}
+body[data-user="gary"] .entry{border-color:#ddd;border-left:4px solid #111}
+body[data-user="gary"] .entry.gym{border-left-color:var(--accent)}
+.entry .ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:var(--card);border:1.5px solid color-mix(in srgb,var(--line) 40%,transparent)}
+body[data-user="kate"] .entry .ico{font-family:var(--label);font-size:15px;border-radius:4px}
+body[data-user="gary"] .entry .ico{border-radius:0}
+.entry .what{min-width:0}
+.entry .what b{display:block;font-size:16px}
+.entry .what span{font-size:14px;color:var(--muted)}
+.entry .what .tm{display:inline;font-size:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.entry .acts{display:flex;gap:6px}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;border:1.5px solid color-mix(in srgb,var(--line) 45%,transparent);background:var(--card);border-radius:50%;font-size:16px;line-height:1}
+.add-line{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.empty{font-size:14px;color:var(--muted);margin:0}
+.banner{display:grid;gap:10px;padding:14px 16px;border:var(--bw) solid var(--line);border-radius:var(--radius);background:color-mix(in srgb,var(--accent) 18%,var(--card));box-shadow:var(--shadow)}
+body[data-user="gary"] .banner{background:#111;color:#fff;border-color:#111;box-shadow:inset 6px 0 0 var(--accent)}
+body[data-user="gary"] .banner .btn{background:#fff;color:#111;border-color:#fff}
+.banner b{font-family:var(--head);font-weight:var(--head-w);text-transform:var(--head-tt);letter-spacing:var(--head-ls);font-size:20px}
+.connect{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.connect div{padding:10px 12px;border:1.5px dashed color-mix(in srgb,var(--line) 50%,transparent);border-radius:var(--radius);font-size:14px}
+.connect b{display:block;font-size:15px}
+
+/* ============ FAMILY ============ */
+.fam{width:100%;border-collapse:collapse;font-size:14px}
+.fam th,.fam td{padding:8px 6px;border-bottom:1px solid color-mix(in srgb,var(--line) 25%,transparent);vertical-align:top;text-align:left}
+.fam th{font-family:var(--label);font-size:var(--label-size);text-transform:var(--label-tt);letter-spacing:var(--label-ls);font-weight:700}
+.fam td.d{font-weight:700;white-space:nowrap;width:52px}
+.pill{display:block;margin:0 0 4px;padding:3px 8px;border-radius:8px;font-size:12.5px;line-height:1.3;background:var(--soft);border:1px solid color-mix(in srgb,var(--line) 25%,transparent)}
+.pill.k{background:#d6f2ef}.pill.g{background:#ececec;border-left:4px solid #e8417f}.pill.l{background:#ece6f8}
+.pill.tog{outline:2px solid var(--accent);outline-offset:-1px}
+.fam-wrap{overflow-x:auto}
+
+/* ============ KIT & SHOP ============ */
+.kit-group{display:grid;gap:8px}
+.kit-group + .kit-group{margin-top:18px}
+.kit-group h3{font-size:18px;margin-bottom:2px}
+.kit{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start;padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--line) 30%,transparent);border-radius:calc(var(--radius) + 2px);background:var(--card)}
+.kit.off{background:transparent;border-style:dashed}
+.kit input[type=checkbox]{width:24px;height:24px;margin:2px 0 0;accent-color:var(--accent)}
+.kit .nm{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-weight:700;cursor:pointer}
+.kit .qty{grid-column:2;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.kit .qty b{min-width:18px;text-align:center;color:var(--ink);font-size:16px;font-variant-numeric:tabular-nums}
+.kit .bookings{grid-column:2;margin:2px 0 0;padding:0;list-style:none;display:grid;gap:2px;font-size:13px;color:var(--muted)}
+.kit .bookings b{color:var(--ink);font-variant-numeric:tabular-nums;margin-right:4px}
+.chip.bad{background:#fde3df;color:#9b1c12;border-color:#f3b4ab}
+.warn{display:block;margin-top:3px;color:#9b1c12;font-weight:700;font-size:13px}
+body[data-user="gary"] .warn{color:#c41f5c}
+.entry.clash{box-shadow:inset 0 0 0 2px #f3b4ab}
+.quickadd{display:grid;gap:8px;padding:12px 14px;border:var(--bw) solid var(--line);border-radius:var(--radius);background:var(--soft);margin-bottom:12px}
+.quickadd input{width:100%;padding:9px 12px;border:var(--bw) solid color-mix(in srgb,var(--line) 60%,transparent);border-radius:var(--radius);background:var(--card);font-size:16px}
+.qarow{display:grid;grid-template-columns:1fr 76px auto;gap:8px;align-items:center}
+.short{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;padding:10px 12px;border:1.5px dashed color-mix(in srgb,var(--line) 50%,transparent);border-radius:var(--radius)}
+.kitnotes{margin:0;padding:10px 14px 10px 30px;border-radius:var(--radius);background:var(--soft);font-size:14px;display:grid;gap:4px}
+.kitnotes .bad{color:#9b1c12;font-weight:700}
+.kit .meta{grid-column:2;font-size:13.5px;color:var(--muted)}
+.kit .detail{grid-column:2;width:100%;padding:6px 10px;border:1.5px solid color-mix(in srgb,var(--line) 30%,transparent);border-radius:var(--radius);background:var(--soft);font-size:14px}
+.stat{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.stat div{font-size:14px;color:var(--muted)}
+.stat b{display:block;font-family:var(--head);font-weight:var(--head-w);font-size:30px;line-height:1;color:var(--ink)}
+.shop{display:grid;gap:12px}
+.buy{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;padding:14px;border:var(--bw) solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}
+.rank{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--head);font-weight:var(--head-w);font-size:20px}
+body[data-user="gary"] .rank{border-radius:0;background:#111;color:#fff;box-shadow:inset 0 -4px 0 var(--accent)}
+.buy .bd{min-width:0;display:grid;gap:6px}
+.buy .bar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;border:1px solid color-mix(in srgb,var(--line) 25%,transparent)}
+.buy .bar i{display:block;height:100%;background:var(--accent)}
+.shopctl{display:grid;gap:12px}
+.pts{display:flex;gap:14px;align-items:center;padding:12px 16px;border:var(--bw) solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}
+.pts .me{display:grid;justify-items:center;min-width:76px}
+.pts .me b{font-family:var(--head);font-weight:var(--head-w);font-size:38px;line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
+body[data-user="gary"] .pts .me b{color:var(--ink)}
+.pts .me span{font-size:12px;color:var(--muted);text-align:center;line-height:1.2}
+.ptsinfo{font-size:14px;color:var(--muted);min-width:0}
+.donerow{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.done{border:1.5px dashed color-mix(in srgb,var(--line) 55%,transparent);background:transparent;border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;color:var(--muted)}
+.done.on{border-style:solid;background:var(--accent2);color:#10302b;border-color:transparent}
+body[data-user="gary"] .done,body[data-user="gary"] .done.on{border-radius:0}
+.entry.isdone .what b:first-child{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--accent)}
+.rewards{display:grid;gap:16px}
+.race{width:100%;max-width:100%;height:auto;display:block}
+.race .gl{stroke:color-mix(in srgb,var(--ink) 12%,transparent);stroke-width:1}
+.race .ax{fill:var(--muted);font-size:10.5px;font-family:var(--body);font-variant-numeric:tabular-nums}
+.race .ax.td{fill:var(--ink);font-weight:700}
+.race .today{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3;opacity:.5}
+.lrow{display:grid;grid-template-columns:auto auto 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid color-mix(in srgb,var(--line) 20%,transparent)}
+.lrow .pos{font-family:var(--head);font-weight:var(--head-w);font-size:20px;width:20px;text-align:center}
+.lrow .sw{width:12px;height:12px;border-radius:50%}
+.lrow .ln{min-width:0;display:grid;justify-items:start;gap:2px}
+.lrow .ln .muted{font-size:13px}
+.goaln{min-width:20px;text-align:center;font-size:18px;font-variant-numeric:tabular-nums}
+.lrow .lp{font-family:var(--head);font-weight:var(--head-w);font-size:26px;font-variant-numeric:tabular-nums}
+body[data-user="kate"] .howpts{color:#e6fffb}
+.howpts{margin:0;font-size:13px;text-align:center}
+.board{display:grid;gap:8px}
+.brow{display:grid;grid-template-columns:minmax(0,1.3fr) 2fr auto;gap:10px;align-items:center;font-size:15px}
+.brow .bn{min-width:0;font-weight:700}
+.bbar{height:12px;border-radius:99px;background:var(--soft);overflow:hidden;border:1px solid color-mix(in srgb,var(--line) 25%,transparent)}
+.bbar i{display:block;height:100%;background:var(--accent)}
+.brow b{font-variant-numeric:tabular-nums;min-width:30px;text-align:right}
+.dinner{display:grid;gap:6px}
+.dinner input{padding:8px 12px;border:var(--bw) solid color-mix(in srgb,var(--line) 60%,transparent);border-radius:var(--radius);background:var(--card);font-size:16px}
+.jar{display:grid;gap:6px}
+.jartop{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums}
+.jar .bar{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;border:1px solid color-mix(in srgb,var(--line) 25%,transparent)}
+.jar .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.jar.full .bar i{background:var(--accent)}
+#shopTop{display:grid;gap:16px}
+.tops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.toppick{display:grid;justify-items:start;align-content:start;gap:4px;padding:10px;border:var(--bw) solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);text-align:left;min-width:0}
+.toppick .pic{width:100%;aspect-ratio:1/1;max-width:100%;display:grid;place-items:center;border-radius:max(4px,calc(var(--radius) - 4px));background:var(--soft);color:var(--ink);margin-bottom:4px}
+.toppick .kicon{width:70%;height:70%}
+.toppick .tl{font-family:var(--label);font-size:calc(var(--label-size) - 2px);text-transform:var(--label-tt);letter-spacing:var(--label-ls);color:var(--muted)}
+.toppick b{font-size:14.5px;line-height:1.2;overflow-wrap:anywhere}
+.toppick .chip{font-size:11.5px;padding:0 7px}
+.kicon{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.kicon .f{fill:var(--accent);opacity:.28;stroke:none}
+.buy .bd{position:relative}
+.buy .mini{position:absolute;right:0;top:0;width:40px;height:40px;color:var(--muted)}
+.buy .mini .kicon{width:100%;height:100%}
+.buy h3{padding-right:46px}
+body[data-user="gary"] .toppick .pic{background:#111;color:#fff}
+body[data-user="gary"] .kicon .f{opacity:.9}
+@media (max-width:380px){.tops{gap:6px}.toppick{padding:7px}}
+.shopgroup{display:grid;gap:12px}
+.shopgroup + .shopgroup{margin-top:18px}
+.grouphead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
+.grouphead h3{font-size:24px}
+.groupnote{margin:-6px 0 0;font-size:14px}
+body[data-user="kate"] .grouphead h3,body[data-user="kate"] .grouphead .muted,body[data-user="kate"] .groupnote{color:#fff}
+body[data-user="kate"] .grouphead h3{text-shadow:2px 2px 0 #1d1838}
+body[data-user="gary"] .grouphead{border-bottom:2px solid #111;padding-bottom:6px}
+.lbl{font-weight:700;font-size:14px}
+.money{width:110px;padding:6px 10px;border:var(--bw) solid color-mix(in srgb,var(--line) 60%,transparent);border-radius:var(--radius);background:var(--card);font-size:16px;font-variant-numeric:tabular-nums}
+.why{display:flex;flex-wrap:wrap;gap:5px}
+.why .chip{white-space:normal}
+.seg.vote button{font-size:13px;padding:4px 11px}
+.buy ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted)}
+
+/* ============ LIBRARY & CLIPS ============ */
+.clips{display:grid;gap:10px}
+.clip{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;padding:8px;border:1.5px solid color-mix(in srgb,var(--line) 30%,transparent);border-radius:calc(var(--radius) + 2px);background:var(--card)}
+.clip.locked{opacity:.62}
+.thumb{position:relative;width:112px;aspect-ratio:16/10;border-radius:max(4px,calc(var(--radius) - 4px));overflow:hidden;background:#222;display:grid;place-items:center}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .len{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.78);color:#fff;font-size:12px;font-weight:700;padding:0 5px;border-radius:3px}
+.thumb.ig{background:linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 60%,#962fbf 85%,#4f5bd5)}
+.thumb.yt{background:linear-gradient(135deg,#ff5a4f,#b3261e)}
+.thumb.ig span,.thumb.yt span{color:#fff;font-weight:700;font-size:12px;text-align:center;padding:4px;line-height:1.2;word-break:break-word}
+.thumb .lock{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;font-size:22px}
+.clip .info{min-width:0;display:grid;gap:5px}
+.clip .info b{font-size:15px;line-height:1.25}
+.clip .by{font-size:13px;color:var(--muted)}
+.clip .tags{display:flex;flex-wrap:wrap;gap:4px}
+.clip .tags .chip{font-size:12px;padding:1px 8px}
+.clip .side{display:flex;gap:6px;flex-wrap:wrap}
+.rate{display:flex;flex-wrap:wrap;gap:6px}
+.rb{border:1.5px solid color-mix(in srgb,var(--line) 40%,transparent);background:transparent;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.rb.on{background:var(--accent2);color:#10302b;border-color:transparent}
+.rb.nope.on{background:#fde3df;color:#9b1c12}
+body[data-user="gary"] .rb{border-radius:0}
+.clip.noped{opacity:.55}
+.filters{display:grid;gap:10px;margin-bottom:14px}
+details.addvid{border:1.5px dashed color-mix(in srgb,var(--line) 55%,transparent);border-radius:var(--radius);padding:10px 14px;margin-bottom:14px}
+details.addvid summary{font-weight:700;cursor:pointer}
+.form{display:grid;gap:12px;margin-top:12px}
+.form label{display:grid;gap:4px;font-size:14px;font-weight:700}
+.form input[type=text],.form input[type=url],.form input[type=number],.form select{width:100%;padding:9px 12px;border:var(--bw) solid color-mix(in srgb,var(--line) 60%,transparent);border-radius:var(--radius);background:var(--card);font-weight:400;font-size:16px}
+.checks{display:flex;flex-wrap:wrap;gap:6px 12px;font-weight:400}
+.checks label{display:inline-flex;gap:6px;align-items:center;font-weight:400}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ============ SHEET / PLAYER ============ */
+.sheet{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;background:rgba(20,18,30,.5)}
+.sheet.open{display:flex}
+.sheet .panel{width:100%;max-width:760px;max-height:92vh;overflow:auto;background:var(--card);color:var(--ink);border:var(--bw) solid var(--line);border-bottom:0;border-radius:calc(var(--radius) + 10px) calc(var(--radius) + 10px) 0 0;padding:0 0 calc(18px + env(safe-area-inset-bottom))}
+@media (min-width:700px){.sheet{align-items:center}.sheet .panel{border-bottom:var(--bw) solid var(--line);border-radius:calc(var(--radius) + 6px);box-shadow:var(--shadow)}}
+.sheet .phead{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--chrome);border-bottom:var(--bw) solid var(--line);font-family:var(--label);font-size:var(--label-size);text-transform:var(--label-tt);letter-spacing:var(--label-ls);font-weight:700}
+body[data-user="gary"] .sheet .phead{background:#111;color:#fff;box-shadow:inset 0 -5px 0 var(--accent)}
+.sheet .phead .t{flex:1}
+.sheet .pbody{padding:16px;display:grid;gap:14px}
+.player{display:grid;gap:12px}
+.screen{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:max(4px,calc(var(--radius) - 4px));overflow:hidden}
+.screen .igcard{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#fff;background:linear-gradient(135deg,#feda75,#fa7e1e 30%,#d62976 60%,#962fbf 85%,#4f5bd5)}
+.screen .ytcard{background:linear-gradient(135deg,#ff5a4f,#8f1d17)}
+.screen .igcard b{display:block;font-size:20px;margin-bottom:6px}
+.progress{display:flex;gap:4px}
+.progress i{flex:1;height:6px;border-radius:99px;background:var(--soft);border:1px solid color-mix(in srgb,var(--line) 25%,transparent)}
+.progress i.on{background:var(--accent)}
+.sum{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:14px;color:var(--muted)}
+.sum b{color:var(--ink);font-size:16px}
+
+/* ============ NAV & TOAST ============ */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;background:var(--nav-bg);border-top:var(--bw) solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav.tabs .in{display:flex;gap:4px;width:100%;max-width:620px}
+nav.tabs button{flex:1;display:grid;justify-items:center;gap:1px;border:0;background:transparent;padding:6px 2px;border-radius:var(--radius);font-size:12.5px;font-weight:700;color:var(--muted)}
+nav.tabs button .i{font-size:20px;line-height:1.1}
+nav.tabs button[aria-current="page"]{color:var(--ink);background:var(--soft)}
+body[data-user="kate"] nav.tabs button{font-family:var(--label);font-size:14px}
+nav.tabs button{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body[data-user="gary"] nav.tabs{border-top:0;box-shadow:inset 0 4px 0 var(--accent)}
+body[data-user="gary"] nav.tabs button{color:#9a9a9a;text-transform:uppercase;letter-spacing:.1em;font-family:var(--label);font-size:13px}
+body[data-user="gary"] nav.tabs button[aria-current="page"]{color:#fff;background:transparent;box-shadow:inset 0 -3px 0 var(--accent)}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);z-index:60;opacity:0;pointer-events:none;background:var(--ink);color:var(--card);padding:10px 18px;border-radius:999px;font-weight:700;font-size:15px;transition:.25s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+body[data-user="gary"] .toast{border-radius:0;box-shadow:inset 0 -4px 0 var(--accent)}
+.view{display:none}.view.on{display:grid;gap:20px}
+footer{text-align:center;font-size:13px;padding-top:8px}
+body[data-user="kate"] footer{color:#e6fffb;font-family:var(--label);font-size:18px}
+@media (max-width:520px){.two{grid-template-columns:1fr}.clip{grid-template-columns:96px 1fr}.thumb{width:96px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body data-user="kate">
+<header class="top"><div class="hdr-in">
+  <div class="brand"><p class="name" id="brandName">garage_gym.exe</p><div class="tag" id="brandTag"></div></div>
+  <div class="who" role="group" aria-label="Who's planning?" id="who"></div>
+</div></header>
+
+<main class="wrap">
+  <!-- WEEK -->
+  <section class="view on" id="v-week" aria-labelledby="h-week">
+    <div class="intro"><h2 id="h-week">Plan your week</h2><p class="lede" id="weekLede"></p></div>
+    <div id="pointsBar"></div>
+    <div id="overlaps"></div>
+    <div class="days" id="days"></div>
+    <div class="card"><div class="card-bar"><span class="t">Connected apps</span><span class="btns"><i></i><i></i><i></i></span></div>
+      <div class="card-body"><p class="muted" style="margin:0 0 10px">Coming next: pull rides, runs and saved videos in automatically.</p>
+      <div class="connect"><div><b>Strava</b>Import runs &amp; rides</div><div><b>Zwift</b>Import turbo sessions</div><div><b>Instagram</b>Bring in saved videos</div></div></div></div>
+  </section>
+
+  <!-- FAMILY -->
+  <section class="view" id="v-family" aria-labelledby="h-family">
+    <div class="intro"><h2 id="h-family">The family week</h2><p class="lede">Everyone's plans side by side. Outlined sessions are shared.</p></div>
+    <div id="weekCtl"></div>
+    <div class="card"><div class="card-bar"><span class="t">This week</span><span class="btns"><i></i><i></i><i></i></span></div>
+      <div class="card-body fam-wrap"><table class="fam" id="famTable"></table></div></div>
+  </section>
+
+  <!-- REWARDS -->
+  <section class="view" id="v-rewards" aria-labelledby="h-rewards">
+    <div class="intro"><h2 id="h-rewards">Rewards</h2><p class="lede">The weekly points race. Top scorer picks Saturday dinner, and every point fills the family kit jar.</p></div>
+    <div id="rewards" class="rewards"></div>
+  </section>
+
+  <!-- KIT -->
+  <section class="view" id="v-kit" aria-labelledby="h-kit">
+    <div class="intro"><h2 id="h-kit">Our kit</h2><p class="lede">Tick what you own. Every tick unlocks more videos.</p></div>
+    <div class="card"><div class="card-bar"><span class="t">Garage inventory</span><span class="btns"><i></i><i></i><i></i></span></div>
+      <div class="card-body"><div class="stat" id="kitStats" style="margin:0 0 16px"></div><div id="kitList"></div></div></div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="view" id="v-shop" aria-labelledby="h-shop">
+    <div class="intro"><h2 id="h-shop">Shopping list</h2><p class="lede">Ranked by what the family votes for, then by what each item unlocks.</p></div>
+    <div id="shopTop"></div>
+    <div class="shop" id="shopList"></div>
+  </section>
+
+  <!-- LIBRARY -->
+  <section class="view" id="v-lib" aria-labelledby="h-lib">
+    <div class="intro"><h2 id="h-lib">Video library</h2><p class="lede">Short follow-alongs from Instagram and YouTube, tagged so sessions build themselves.</p></div>
+    <div class="card"><div class="card-bar"><span class="t" id="libCount">Library</span><span class="btns"><i></i><i></i><i></i></span></div>
+      <div class="card-body">
+        <form class="quickadd" id="addForm">
+          <b>Quick add</b>
+          <label class="sr" for="qaUrl">Link</label><input id="qaUrl" type="url" name="url" required placeholder="Paste an Instagram or YouTube link">
+          <div class="qarow"><label class="sr" for="qaTitle">Title</label><input id="qaTitle" type="text" name="title" required placeholder="What is it? e.g. Glute bridge burner">
+            <label class="sr" for="qaMins">Length in minutes</label><input id="qaMins" type="number" name="mins" min="0.5" max="60" step="0.5" value="1" required aria-describedby="qaHint"><span class="muted" id="qaHint">min</span></div>
+          <div class="row"><button class="btn primary sm" type="submit">Save to inbox</button><span class="muted" style="font-size:13px">Tag it later. It won't be used in sessions until it's tagged.</span></div>
+        </form>
+        <div id="inboxNote"></div>
+        <div class="filters"><div class="seg" id="libFocus"></div><div class="seg" id="libShow"></div></div>
+        <div class="clips" id="libList"></div>
+      </div></div>
+  </section>
+
+  <footer class="muted">Made at hack day with Claude · <button class="btn ghost sm" id="pinBtn" type="button">Change my PIN</button> · <button class="btn ghost sm" id="resetBtn" type="button">Reset demo</button></footer>
+</main>
+
+<nav class="tabs" aria-label="Sections"><div class="in" id="tabs"></div></nav>
+
+<!-- sheets -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="panel"><div class="phead"><span class="t" id="sheetTitle"></span><button class="icon-btn" type="button" id="sheetClose" aria-label="Close">✕</button></div>
+  <div class="pbody" id="sheetBody"></div></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===================== DATA ===================== */
+const USERS={
+  kate:{name:'Kate',brand:'garage_gym.exe',tag:'C:\\GARAGE> run week.bat',icon:'=^.^='},
+  gary:{name:'Gary',brand:'Garage Gym',tag:'Club rides & strength · est. 2026',icon:'◆'},
+  lucy:{name:'Lucy',brand:'the garage gym',tag:'strength · flexibility · flow',icon:'✿'}
+};
+const FOCUS={core:'Core',legs:'Legs & glutes',upper:'Upper body',back:'Back',full:'Full body',mobility:'Mobility',power:'Power & cardio'};
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAYS_LONG=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const SLOTS={morning:'Morning',lunch:'Lunchtime',evening:'Evening'};
+const KINDS={
+  gym:{label:'Garage session',ico:'🏋️',kate:'GYM'},
+  run:{label:'Run',ico:'🏃',src:'Strava',kate:'RUN'},
+  zwift:{label:'Turbo ride',ico:'🚴',src:'Zwift',kate:'ZWF'},
+  ride:{label:'Outdoor ride',ico:'🚵',src:'Strava',kate:'RDE'},
+  class:{label:'Class / club',ico:'🤸',kate:'CLS'},
+  other:{label:'Something else',ico:'⭐',kate:'ETC'}
+};
+
+/* Kit: where it lives, whether we own it. Details are editable. */
+const KIT0=[
+  {id:'dumbbells',name:'Dumbbells / hand weights',group:'Weights',owned:true},
+  {id:'kettlebell',name:'Kettlebell',group:'Weights',owned:false},
+  {id:'barbell',name:'Barbell & plates',group:'Weights',owned:false},
+  {id:'longbands',name:'Long resistance bands',group:'Bands, balls & mats',owned:true},
+  {id:'minibands',name:'Mini loop bands',group:'Bands, balls & mats',owned:true},
+  {id:'mat',name:'Exercise mat',group:'Bands, balls & mats',owned:true},
+  {id:'yogablocks',name:'Yoga blocks',group:'Bands, balls & mats',owned:true},
+  {id:'foamroller',name:'Foam roller',group:'Bands, balls & mats',owned:true},
+  {id:'stabilityball',name:'Big yoga / stability ball',group:'Bands, balls & mats',owned:true},
+  {id:'pilatesball',name:'Small squishy Pilates ball',group:'Bands, balls & mats',owned:true},
+  {id:'parallettes',name:'Parallettes',group:'Gymnastics',owned:true},
+  {id:'beam',name:'Wooden floor beam',group:'Gymnastics',owned:true},
+  {id:'acroblocks',name:'Acro blocks',group:'Gymnastics',owned:true},
+  {id:'doorbar',name:'Door pull-up bar',group:'Bars & frames',owned:true},
+  {id:'wallbars',name:'Wall bars',group:'Bars & frames',owned:false},
+  {id:'bench',name:'Weight bench',group:'Bars & frames',owned:false},
+  {id:'turbo',name:'Bike on turbo trainer',group:'Cardio',owned:true},
+  {id:'rope',name:'Skipping rope',group:'Cardio',owned:true},
+  {id:'rower',name:'Rowing machine',group:'Cardio',owned:false},
+  {id:'reformer',name:'Pilates reformer',group:'Cardio',owned:false},
+  {id:'trampoline',name:'Trampoline',group:'Garden',owned:true,loc:'garden'},
+  {id:'flooring',name:'Rubber gym flooring',group:'Garage setup',owned:false,shareable:1,essential:1,perk:'Protects the floor and makes jumps, dropped weights and floor work safer'},
+  {id:'lights',name:'Garage lighting',group:'Garage setup',owned:false,shareable:1,essential:1,perk:'Bright, even light for early and evening sessions'},
+  {id:'mirror',name:'Wall mirror',group:'Garage setup',owned:false,shareable:1,perk:'Check your form and lines, great for gymnastics shapes and Pilates'},
+  {id:'tv',name:'TV for the garage',group:'Garage setup',owned:false,shareable:1,perk:'Big-screen follow-alongs for everything in the library'}
+];
+
+/* Library: Kate's Instagram saves + YouTube follow-alongs.
+   mins = length in minutes; approx = length not checked yet. */
+const IG=h=>`https://www.instagram.com/${h}/`;
+const VIDEOS0=[
+  {id:'ig1',src:'ig',title:'A million things to do with one kettlebell',creator:'@its_babybutton',url:IG('its_babybutton'),mins:1,focus:['full','power'],type:'strength',kit:['kettlebell']},
+  {id:'ig2',src:'ig',title:'Gymnastics core circuit (V-snaps ×8 and more)',creator:'@ktlyn_lifts',url:IG('ktlyn_lifts'),mins:2,approx:1,focus:['core'],type:'core',kit:['mat']},
+  {id:'ig3',src:'ig',title:'Hip flexibility routine',creator:'@coachjohnnoel',url:IG('coachjohnnoel'),mins:1,approx:1,focus:['mobility','legs'],type:'mobility',kit:[]},
+  {id:'ig4',src:'ig',title:'Trampoline conditioning: tuck jumps ×20',creator:'@flip_and_fit_dubai',url:IG('flip_and_fit_dubai'),mins:1,approx:1,focus:['power','legs'],type:'cardio',kit:['trampoline'],outdoor:1},
+  {id:'ig5',src:'ig',title:'Upper-back conditioning with a block',creator:'@nkactiveuk',url:IG('nkactiveuk'),mins:2,approx:1,focus:['back','upper'],type:'strength',kit:['yogablocks','mat'],together:1},
+  {id:'yt1',src:'yt',yt:'bltNSySf2aE',title:'5-Minute Dumbbell HIIT',mins:5,focus:['full','power'],type:'cardio',kit:['dumbbells']},
+  {id:'yt2',src:'yt',yt:'xccd80TH0rU',title:'5 Min Dumbbell Back Workout',mins:5,focus:['back','upper'],type:'strength',kit:['dumbbells']},
+  {id:'yt3',src:'yt',yt:'3pAmBm2zTvc',title:'5 Minute Full Body (with dumbbells)',mins:5,focus:['full'],type:'strength',kit:['dumbbells']},
+  {id:'yt4',src:'yt',yt:'usDafmIH46s',title:'5 Min Full Body Resistance Band Warm Up',mins:5,focus:['full','mobility'],type:'warmup',kit:['longbands']},
+  {id:'yt5',src:'yt',yt:'qOdQXxA1Rus',title:'5-Minute Resistance Band Workout You Can Do Anywhere',mins:5,focus:['full','upper'],type:'strength',kit:['longbands'],together:1},
+  {id:'yt6',src:'yt',yt:'GhodSw_Caa8',title:'5 Minute Total Body Beginner Kettlebell',mins:5,focus:['full'],type:'strength',kit:['kettlebell']},
+  {id:'yt7',src:'yt',yt:'vC2JgXDeE3c',title:'Upper Body Kettlebell 5 Minute Workout',mins:5,focus:['upper','back'],type:'strength',kit:['kettlebell']},
+  {id:'yt8',src:'yt',yt:'yl-qOEbc-aU',title:'5 Min Abs Workout at Home',mins:5,focus:['core'],type:'core',kit:['mat'],together:1},
+  {id:'yt9',src:'yt',yt:'IcqsyUGZqzc',title:'5 Min Flat Abs Workout (music & beeps)',mins:5,focus:['core'],type:'core',kit:['mat']},
+  {id:'yt10',src:'yt',yt:'EPdVvWRciJE',title:'5-Minute Standing Leg Workout',mins:5,focus:['legs'],type:'strength',kit:[]},
+  {id:'yt11',src:'yt',yt:'E8ndOxPxio8',title:'5-Minute Floor Glute Workout',mins:5,focus:['legs'],type:'strength',kit:['mat']},
+  {id:'yt12',src:'yt',yt:'whf9pRHbH0o',title:'5 Minute Stretching Routine',mins:5,focus:['mobility'],type:'recovery',kit:['mat'],together:1},
+  {id:'yt13',src:'yt',yt:'VqGVoVn7xjA',title:'5 Minute Daily Mobility Routine',mins:5,focus:['mobility','full'],type:'warmup',kit:[]},
+  {id:'yt14',src:'yt',yt:'0YUkFLyLMQ0',title:'5 Min Shoulder Mobility Routine',mins:5,focus:['mobility','upper','back'],type:'warmup',kit:[]},
+  {id:'yt15',src:'yt',yt:'QLkLKfL_7F0',title:'5 Min Lower Body Warm Up',mins:5,focus:['legs','mobility'],type:'warmup',kit:[]},
+  {id:'yt16',src:'yt',yt:'k9MY1ijAvGo',title:'5 Min Upper Body Warm Up',mins:5,focus:['upper','back'],type:'warmup',kit:[]},
+  {id:'yt17',src:'yt',yt:'HxEWc4jQqqk',title:'Pull Up Bar Ab Workout – 5 Minutes',mins:5,focus:['core'],type:'core',kit:['doorbar']},
+  {id:'yt18',src:'yt',yt:'_eE8QzCf8uw',title:'5 Minute Pull Up Calisthenics Workout',mins:5,focus:['back','upper'],type:'strength',kit:['doorbar']},
+  {id:'yt19',src:'yt',yt:'dYOwYRVDG9w',title:'5 Minute Total Body Barbell Workout',mins:5,focus:['full'],type:'strength',kit:['barbell']},
+  {id:'yt20',src:'yt',yt:'sY--6vqLAII',title:'5 Minute Jump Rope Workout',mins:5,focus:['power'],type:'cardio',kit:['rope'],together:1},
+  {id:'yt21',src:'yt',yt:'jZ2pAfuBuMk',title:'5 Minute Stability Ball Core Workout',mins:5,focus:['core'],type:'core',kit:['stabilityball']},
+  {id:'yt22',src:'yt',yt:'m0RKd2GOlHM',title:'5 Minute Foam Roll for Runners',mins:5,focus:['legs','mobility'],type:'recovery',kit:['foamroller']},
+  {id:'yt23',src:'yt',yt:'FxxPSep7jlo',title:'Mini Ball Abs Workout',mins:8,approx:1,focus:['core'],type:'core',kit:['pilatesball','mat']},
+  {id:'yt24',src:'yt',yt:'r9ZPWn94p8A',title:'20 Min Parallettes Workout for Beginners',mins:20,focus:['upper','core'],type:'skill',kit:['parallettes']},
+  {id:'yt25',src:'yt',yt:'QFOatmkO9qg',title:'Wall Bars Follow-Along Mobility Routine',mins:10,approx:1,focus:['mobility','back'],type:'mobility',kit:['wallbars']},
+  {id:'yt26',src:'yt',yt:'YEJ3kDEw80k',title:'Beginner Stall Bar Workout',mins:15,approx:1,focus:['full','core'],type:'strength',kit:['wallbars']},
+  {id:'yt27',src:'yt',yt:'a1CEP8fgCV0',title:'Total Beginners 35-Min Reformer Workout',mins:35,focus:['full','core'],type:'strength',kit:['reformer']},
+  {id:'yt28',src:'yt',yt:'XW8iK_tFkNU',title:'Follow-Along Reformer Pilates Workout',mins:20,approx:1,focus:['full','core'],type:'strength',kit:['reformer']}
+];
+
+/* A demo week so the app has something in it from the start. */
+const PLAN0={
+  kate:[
+    {day:0,time:'07:00',kind:'run',label:'Easy hill run',mins:45,done:1},
+    {day:1,time:'07:00',kind:'zwift',label:'Turbo recovery spin',mins:30},
+    {day:1,time:'18:30',kind:'gym',focus:'core',mins:20},
+    {day:3,time:'19:00',kind:'gym',focus:'mobility',mins:15},
+    {day:5,time:'08:00',kind:'run',label:'Long trail run',mins:90}
+  ],
+  gary:[
+    {day:1,time:'06:30',kind:'zwift',label:'Zwift group ride',mins:60},
+    {day:3,time:'19:00',kind:'gym',focus:'upper',mins:20},
+    {day:6,time:'09:00',kind:'ride',label:'Club ride',mins:150}
+  ],
+  lucy:[
+    {day:0,time:'17:30',kind:'class',label:'Gymnastics training',mins:180,done:1},
+    {day:1,time:'18:30',kind:'gym',focus:'back',mins:15},
+    {day:2,time:'17:30',kind:'class',label:'Gymnastics training',mins:180},
+    {day:4,time:'17:30',kind:'class',label:'Gymnastics training',mins:180},
+    {day:5,time:'10:00',kind:'gym',focus:'core',mins:10}
+  ]
+};
+
+/* ===================== STATE ===================== */
+const KEY='garagegym.v1';
+let S;
+function fresh(){
+  let n=1; const plan={};
+  for(const u in PLAN0) plan[u]=PLAN0[u].map(e=>({id:'e'+(n++),...e}));
+  return {user:'kate',tab:'week',kit:KIT0.map(k=>({...k,detail:'',qty:1})),custom:[],plan,shared:{},libFocus:'all',libShow:'all',
+    votes:{flooring:{kate:'must',gary:'must'},lights:{gary:'must',kate:'want'},kettlebell:{kate:'must'},wallbars:{lucy:'must',kate:'want'},reformer:{kate:'want',lucy:'want'},tv:{lucy:'want',gary:'want'},mirror:{lucy:'must'},barbell:{gary:'later'},'more:dumbbells':{kate:'want'}},
+    prices:{},budget:'',shopSort:'family',pins:{},jarGoal:100,jarSpent:0,jarBank:0,dinner:'',ptsV2:1,goals:{},optOut:{}};
+}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const s=JSON.parse(r);if(s&&s.plan&&s.kit){if(!s.ptsV2){s.jarGoal=100;s.ptsV2=1}KIT0.forEach((k,i)=>{if(!s.kit.some(x=>x.id===k.id))s.kit.splice(Math.min(i,s.kit.length),0,{...k,detail:'',qty:1})});return s}}}catch(e){}return fresh()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+S=load();
+
+/* ===================== HELPERS ===================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const videos=()=>VIDEOS0.concat(S.custom);
+const vById=id=>videos().find(v=>v.id===id);
+const kitById=id=>S.kit.find(k=>k.id===id);
+const owned=id=>!!(kitById(id)&&kitById(id).owned);
+const ready=v=>v.kit.every(owned);
+const fmtMins=m=>m<1?Math.round(m*60)+' sec':(m%1? m.toFixed(1):m)+' min';
+const total=ids=>ids.reduce((a,id)=>a+((vById(id)||{}).mins||0),0);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const others=u=>Object.keys(USERS).filter(x=>x!==u);
+const SLOT_TIME={morning:'07:00',lunch:'12:30',evening:'18:30'};
+const tOf=e=>e.time||SLOT_TIME[e.slot]||'18:30';
+const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+(m||0)};
+const endOf=e=>{const m=toMin(tOf(e))+e.mins;return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0')};
+const overlaps=(a,b)=>a.day===b.day&&toMin(tOf(a))<toMin(tOf(b))+b.mins&&toMin(tOf(b))<toMin(tOf(a))+a.mins;
+const gymMatch=(o,e)=>S.plan[o].find(x=>x.kind==='gym'&&overlaps(x,e));
+const EXTRA={dumbbells:'Second set of dumbbells',kettlebell:'Second kettlebell',turbo:'Second bike & turbo trainer',longbands:'Another set of long bands',minibands:'More mini loop bands',mat:'Another exercise mat',yogablocks:'More yoga blocks',foamroller:'Second foam roller',stabilityball:'Second stability ball',pilatesball:'Second Pilates ball',parallettes:'Second pair of parallettes',doorbar:'Second pull-up bar',rope:'Second skipping rope',acroblocks:'More acro blocks'};
+const extraName=k=>EXTRA[k.id]||('Another '+k.name.toLowerCase());
+const shOf=(e,u)=>e.kind==='gym'&&e.sk&&S.shared[e.sk]&&S.shared[e.sk].members.includes(u)?S.shared[e.sk]:null;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2600)}
+const srcName=v=>v.src==='ig'?'Instagram':v.src==='yt'?'YouTube':'Web';
+function thumb(v,locked){
+  const len=`<span class="len">${v.approx?'~':''}${fmtMins(v.mins)}</span>`;
+  const lock=locked?'<span class="lock" aria-hidden="true">🔒</span>':'';
+  if(v.src==='yt') return `<div class="thumb yt"><span>▶ YouTube</span>${len}${lock}</div>`;
+  return `<div class="thumb ig"><span>${srcName(v)}</span>${len}${lock}</div>`;
+}
+function kitChips(v){
+  if(!v.kit.length) return '<span class="chip have">No kit</span>';
+  return v.kit.map(k=>{const kk=kitById(k);return `<span class="chip ${owned(k)?'have':'need'}">${owned(k)?'':'needs '}${esc(kk?kk.name:k)}</span>`}).join('');
+}
+
+/* ===================== KIT BOOKINGS =====================
+   Every planned session books the kit its clips use (a Zwift ride books the bike).
+   Each person needs their own piece unless the kit is shareable (e.g. the TV). */
+const perPerson=k=>{const kk=kitById(k);return !!kk&&!kk.shareable};
+const qtyOf=k=>{const kk=kitById(k);return kk&&kk.owned?(kk.qty||1):0};
+function kitUse(e,u){
+  if(e.kind==='zwift')return['turbo'];
+  if(e.kind!=='gym')return[];
+  const sh=shOf(e,u);const ids=(sh?sh.clips:e.clips)||[];
+  return [...new Set(ids.flatMap(id=>(vById(id)||{kit:[]}).kit))];
+}
+function usages(){
+  const out=[],seen=new Set();
+  for(const u in S.plan)for(const e of S.plan[u]){const sh=shOf(e,u);
+    if(sh){if(seen.has(e.sk))continue;seen.add(e.sk);out.push({e,users:sh.members.slice(),need:sh.members.length,kit:kitUse(e,u)})}
+    else out.push({e,users:[u],need:1,kit:kitUse(e,u)})}
+  return out;
+}
+function busy(k,e,members){return usages().filter(x=>x.kit.includes(k)&&overlaps(x.e,e)&&!x.users.some(w=>members.includes(w)))}
+function freeQty(k,e,members){return qtyOf(k)-busy(k,e,members).reduce((a,x)=>a+x.need,0)}
+function canUse(e,members){return k=>!perPerson(k)||freeQty(k,e,members)>=members.length}
+const who=x=>x.users.map(w=>USERS[w].name).join(' & ');
+function conflicts(e,u){
+  const sh=shOf(e,u),members=sh?sh.members:[u];
+  return kitUse(e,u).filter(k=>perPerson(k)&&owned(k)).map(k=>({k,free:freeQty(k,e,members),need:members.length,by:busy(k,e,members)})).filter(c=>c.free<c.need);
+}
+function conflictText(c){
+  const nm=kitById(c.k).name;
+  if(c.by.length)return `${nm} in use by ${c.by.map(x=>`${who(x)} ${tOf(x.e)}–${endOf(x.e)}`).join(', ')}`;
+  return `${nm}: only ${qtyOf(c.k)} for ${c.need} people`;
+}
+/* Kit left out of a session because it's booked or there isn't enough for everyone */
+function leftOut(e,members,focus){
+  return S.kit.filter(k=>k.owned&&perPerson(k.id)&&videos().some(v=>v.kit.includes(k.id)&&(v.focus.includes(focus)||v.focus.includes('full'))))
+    .map(k=>({k:k.id,free:freeQty(k.id,e,members),need:members.length,by:busy(k.id,e,members)})).filter(c=>c.free<c.need);
+}
+function clashes(k){
+  const q=qtyOf(k),us=usages().filter(x=>x.kit.includes(k));let n=0;
+  us.forEach((a,i)=>{if(a.need>q)n++;us.slice(i+1).forEach(b=>{if(overlaps(a.e,b.e)&&a.need+b.need>q)n++})});
+  return n;
+}
+function sharedLimited(k){
+  const q=qtyOf(k);
+  return Object.values(S.shared).filter(sh=>sh.members.length>q&&videos().some(v=>v.kit.includes(k)&&v.focus.includes(sh.focus))).length;
+}
+
+/* ===================== RATINGS =====================
+   Per person: 'like' (more like this) or 'nope' (not again). */
+const rateOf=(u,id)=>((S.ratings||{})[u]||{})[id];
+function setRate(u,id,r){S.ratings=S.ratings||{};const m=S.ratings[u]=S.ratings[u]||{};if(m[id]===r)delete m[id];else m[id]=r;save();return m[id]}
+function affinity(u,v){
+  const m=(S.ratings||{})[u]||{};let a=0;
+  for(const id in m){if(m[id]!=='like')continue;const l=vById(id);if(!l)continue;
+    if(l.id===v.id)a=Math.max(a,2.5);else if(l.creator&&l.creator===v.creator)a=Math.max(a,1.2);else if(l.type===v.type&&l.focus.some(f=>v.focus.includes(f)))a=Math.max(a,.6)}
+  return a;
+}
+const rateBtns=(id,extra='')=>{const r=rateOf(S.user,id);return `<span class="rate"><button type="button" class="rb ${r==='like'?'on':''}" data-rate="${id}|like" ${extra} aria-pressed="${r==='like'}">👍 More like this</button><button type="button" class="rb nope ${r==='nope'?'on':''}" data-rate="${id}|nope" ${extra} aria-pressed="${r==='nope'}">👎 Not again</button></span>`};
+
+/* ===================== SESSION BUILDER =====================
+   Stacks short clips to fill the chosen time:
+   warm-up (10+ min) → main work on the focus → cool-down (15+ min). */
+function buildSession(focus,mins,opts={}){
+  const pool=videos().filter(v=>!v.inbox&&ready(v)&&(opts.outdoor||!v.outdoor)&&(!opts.can||v.kit.every(opts.can))&&!(opts.members||[]).some(m=>rateOf(m,v.id)==='nope'));
+  const mem=opts.members||[];
+  const pref=v=>(opts.together&&v.together?2:0)+(v.src==='ig'?1:0)+mem.reduce((a,m)=>a+affinity(m,v),0)+Math.random();
+  const pick=list=>list.sort((a,b)=>pref(b)-pref(a))[0];
+  const out=[];let left=mins;
+  const take=v=>{if(v){out.push(v.id);left-=v.mins}};
+  if(mins>=10){take(pick(pool.filter(v=>v.type==='warmup'&&v.mins<=6&&(v.focus.includes(focus)||v.focus.includes('full')||v.focus.includes('mobility')))))}
+  let cool=null;
+  if(mins>=15&&focus!=='mobility'){cool=pick(pool.filter(v=>v.type==='recovery'&&!out.includes(v.id)&&v.mins<=6));if(cool)left-=cool.mins}
+  const main=shuffle(pool.filter(v=>v.focus.includes(focus)&&!['warmup','recovery'].includes(v.type)||(focus==='mobility'&&v.focus.includes('mobility'))))
+    .sort((a,b)=>pref(b)-pref(a));
+  for(const v of main){if(left<=0.5)break;if(out.includes(v.id)||(cool&&cool.id===v.id))continue;if(v.mins<=left+1)take(v)}
+  if(left>2){for(const v of shuffle(pool.filter(v=>v.focus.includes('full')&&v.type!=='warmup'))){if(left<=2)break;if(!out.includes(v.id)&&v.mins<=left+1)take(v)}}
+  if(cool)out.push(cool.id);
+  return out;
+}
+function swapCandidates(ids,idx,focus,opts){
+  const cur=vById(ids[idx]);
+  return videos().filter(v=>!v.inbox&&ready(v)&&(opts.outdoor||!v.outdoor)&&(!opts.can||v.kit.every(opts.can))&&!(opts.members||[]).some(m=>rateOf(m,v.id)==='nope')&&!ids.includes(v.id)&&(v.focus.includes(focus)||v.type===cur.type));
+}
+
+/* ===================== RENDER: SHELL ===================== */
+function renderShell(){
+  const u=USERS[S.user];
+  document.body.dataset.user=S.user;
+  $('#brandName').textContent=u.brand;
+  $('#brandTag').textContent=u.tag;
+  document.title=u.brand+' · '+u.name;
+  $('#who').innerHTML=Object.entries(USERS).map(([id,x])=>`<button type="button" data-user="${id}" aria-pressed="${id===S.user}">${x.name}${S.pins&&S.pins[id]&&id!==S.user?'<svg class="lk" viewBox="0 0 12 12" aria-label=" (locked)"><rect x="2" y="5" width="8" height="6" rx="1.2"/><path d="M4 5V3.6a2 2 0 0 1 4 0V5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>':''}</button>`).join('');
+  const tabs=[['week','Week','🗓'],['family','Family','👪'],['rewards','Rewards','🏆'],['kit','Kit','🧰'],['shop','Shop','🛒'],['lib','Library','▶']];
+  $('#tabs').innerHTML=tabs.map(([id,l,i])=>`<button type="button" data-tab="${id}" ${S.tab===id?'aria-current="page"':''}><span class="i" aria-hidden="true">${i}</span>${l}</button>`).join('');
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+S.tab));
+}
+function render(){renderShell();({week:renderWeek,family:renderFamily,rewards:renderRewards,kit:renderKit,shop:renderShop,lib:renderLib})[S.tab]()}
+
+/* ===================== WEEK ===================== */
+function entryLine(e,u){
+  const k=KINDS[e.kind]; const sh=shOf(e,u);
+  const ico=S.user==='kate'?k.kate:k.ico;
+  let title,sub;
+  if(e.kind==='gym'){
+    const f=sh?sh.focus:e.focus;
+    title=`${FOCUS[f]} · ${sh?sh.mins:e.mins} min`;
+    sub=sh?`Together with ${sh.members.filter(m=>m!==u).map(m=>USERS[m].name).join(' & ')} · ${USERS[sh.leader].name} leads`:(e.clips?`${e.clips.length} clips ready`:'Garage session');
+  } else {title=e.label||k.label;sub=`${k.label} · ${e.mins>=60?(e.mins/60).toFixed(e.mins%60?1:0)+' hr':e.mins+' min'}${k.src?` · <span class="chip src">via ${k.src}</span>`:''}`}
+  const cf=conflicts(e,u);
+  if(cf.length)sub+=cf.map(c=>`<span class="warn">⚠ ${esc(conflictText(c))}</span>`).join('');
+  return `<div class="entry ${e.kind==='gym'?'gym':''} ${cf.length?'clash':''} ${e.done?'isdone':''}">
+    <span class="ico" aria-hidden="true">${ico}</span>
+    <span class="what"><b>${esc(title)}</b><span><b class="tm">${tOf(e)}–${endOf(e)}</b> · ${sub}</span></span>
+    <span class="acts">${e.kind==='gym'?`<button class="btn sm primary" type="button" data-open="${e.id}">${sh||e.clips?'Open':'Build'}</button>`:''}
+</span>
+    <span class="donerow"><span class="row" style="gap:6px"><button class="icon-btn" type="button" data-edit="${e.id}" aria-label="Edit">✎</button><button class="icon-btn" type="button" data-del="${e.id}" aria-label="Remove">✕</button></span>${e.done?`<button type="button" class="done on" data-done="${e.id}" aria-pressed="true">✓ Done · +${ptsOf(e,u)} pts</button>`:`<button type="button" class="done" data-done="${e.id}" aria-pressed="false">${e.kind==='gym'?'Mark done':'Done'}</button>`}</span>
+  </div>`;
+}
+function findOverlaps(u){
+  const res=[];
+  for(const e of S.plan[u].filter(e=>e.kind==='gym')){
+    const with_=others(u).filter(o=>gymMatch(o,e));
+    if(with_.length) res.push({e,with_,shared:!!shOf(e,u)});
+  }
+  return res;
+}
+function renderWeek(){
+  const u=S.user, name=USERS[u].name;
+  const n=S.plan[u].length, g=S.plan[u].filter(e=>e.kind==='gym').length;
+  $('#weekLede').textContent=`Hi ${name}. ${n} sessions planned this week, ${g} in the garage.`;
+  const lu=leader();
+  $('#pointsBar').innerHTML=`<div class="pts"><div class="me"><b>${weekPts(u)}</b><span>your points this week</span></div>
+    <div class="ptsinfo"><b style="color:var(--ink)">${doneCount(u)} of ${goalOf(u)}</b> sessions towards your goal${doneCount(u)>=goalOf(u)?' ✓':''}<br>${lu?`${lu===u?'You are':USERS[lu].name+' is'} top and picks Saturday dinner.`:'Nobody is ahead yet. Top scorer picks Saturday dinner.'}<br>Family kit jar: ${Math.min(jarNow(),jarGoal())} / ${jarGoal()}</div></div>`;
+  const lw=(S.lastWeek||{})[u]||[];
+  const rpt=!S.plan[u].length&&lw.length?`<div class="banner"><b>A fresh week</b><span>Repeat last week's ${lw.length} session${lw.length>1?'s':''} and edit what's changed, or start from scratch.</span><div class="row"><button class="btn sm primary" type="button" data-repeat>Repeat last week</button></div></div>`:'';
+  const ov=findOverlaps(u).filter(o=>!o.shared);
+  $('#overlaps').innerHTML=rpt+ov.map(o=>`<div class="banner"><b>${o.with_.map(w=>USERS[w].name).join(' & ')} ${o.with_.length>1?'are':'is'} in the garage too</b>
+    <span>${DAYS_LONG[o.e.day]} from ${tOf(o.e)}. Want to train together? One of you leads and picks the focus.</span>
+    <div class="row"><button class="btn sm primary" type="button" data-together="${o.e.id}">Train together</button></div></div>`).join('');
+  $('#days').innerHTML=DAYS.map((d,i)=>{
+    const es=S.plan[u].filter(e=>e.day===i).sort((a,b)=>toMin(tOf(a))-toMin(tOf(b)));
+    return `<article class="card day"><div class="card-bar"><span class="t">${S.user==='kate'?DAYS_LONG[i].toLowerCase()+'.day':DAYS_LONG[i]}</span><span class="btns"><i></i><i></i><i></i></span></div>
+      <div class="card-body">${es.map(e=>entryLine(e,u)).join('')||'<p class="empty">Rest day.</p>'}
+      <div class="add-line"><span></span><button class="btn sm" type="button" data-add="${i}">+ Add</button></div></div></article>`;
+  }).join('');
+}
+
+/* ---- add entry ---- */
+function leaveShared(e,u){
+  const k=e.sk,sh=k&&S.shared[k];delete e.sk;if(!sh)return;
+  sh.members=sh.members.filter(m=>m!==u);
+  if(sh.members.length<2||sh.leader===u){for(const m in S.plan)S.plan[m].forEach(x=>{if(x.sk===k)delete x.sk});delete S.shared[k]}
+}
+function openAdd(day,eid){
+  const u=S.user,ed=eid?S.plan[u].find(x=>x.id===eid):null;
+  if(ed)day=ed.day;
+  openSheet(ed?'Edit session':`Add to ${DAYS_LONG[day]}`,`<form class="form" id="entryForm" style="margin:0">
+    <div class="seg" role="group" aria-label="Type" id="kindSeg">${Object.entries(KINDS).map(([k,x],i)=>`<button type="button" data-kind="${k}" aria-pressed="${ed?ed.kind===k:i===0}">${x.ico} ${x.label}</button>`).join('')}</div>
+    ${ed?`<label>Day<select name="day">${DAYS_LONG.map((d,i)=>`<option value="${i}" ${i===day?'selected':''}>${d}</option>`).join('')}</select></label>`:''}
+    <div class="two"><label>Start time<input type="time" name="time" id="entryTime" value="${ed?tOf(ed):'18:30'}" step="300" required></label>
+    <label>Minutes<input type="number" name="mins" min="5" max="600" step="5" value="${ed?ed.mins:20}" required></label></div>
+    <label id="focusField">What to target<select name="focus">${Object.entries(FOCUS).map(([k,l])=>`<option value="${k}" ${ed&&ed.focus===k?'selected':''}>${l}</option>`).join('')}</select></label>
+    <label id="labelField" hidden>Name<input type="text" name="label" value="${ed&&ed.label?esc(ed.label):''}" placeholder="e.g. Parkrun, club ride, Pilates class"></label>
+    <p class="muted" id="srcNote" style="margin:0;font-size:14px" hidden></p>
+    ${ed&&ed.sk?'<p class="muted" style="margin:0;font-size:14px">This is a shared session. Changing the day or time takes you out of it.</p>':''}
+    <div><button class="btn primary" type="submit">${ed?'Save changes':'Add'}</button></div></form>`);
+  let kind=ed?ed.kind:'gym';
+  const f=$('#entryForm');
+  const sync=()=>{f.querySelectorAll('#kindSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.kind===kind));
+    $('#focusField').hidden=kind!=='gym';$('#labelField').hidden=kind==='gym';
+    const src=KINDS[kind].src;$('#srcNote').hidden=!src;if(src)$('#srcNote').textContent=`Later this will sync from ${src} automatically.`};
+  f.querySelector('#kindSeg').addEventListener('click',ev=>{const b=ev.target.closest('button');if(b){kind=b.dataset.kind;sync()}});
+  f.addEventListener('submit',ev=>{ev.preventDefault();const d=new FormData(f);
+    if(ed){const nd=+d.get('day'),nt=d.get('time')||tOf(ed),nm=+d.get('mins')||ed.mins,nf=kind==='gym'?d.get('focus'):undefined;
+      if(ed.sk&&(nd!==ed.day||nt!==tOf(ed)||kind!=='gym'))leaveShared(ed,u);
+      if(kind!=='gym'||nf!==ed.focus||nm!==ed.mins||kind!==ed.kind)delete ed.clips;
+      Object.assign(ed,{day:nd,time:nt,mins:nm,kind});delete ed.slot;
+      if(kind==='gym'){ed.focus=nf;delete ed.label}else{ed.label=d.get('label')||KINDS[kind].label;delete ed.focus}
+      save();closeSheet();render();toast('Saved');return}
+    const e={id:'e'+Date.now(),day,time:d.get('time')||'18:30',kind,mins:+d.get('mins')||20};
+    if(kind==='gym')e.focus=d.get('focus');else e.label=d.get('label')||KINDS[kind].label;
+    S.plan[u].push(e);save();closeSheet();render();toast('Added to '+DAYS_LONG[day]);
+  });
+  sync();
+}
+
+/* ---- together ---- */
+function openTogether(eid){
+  const u=S.user, e=S.plan[u].find(x=>x.id===eid);
+  const members=[u,...others(u).filter(o=>gymMatch(o,e))];
+  const entryOf=m=>m===u?e:gymMatch(m,e);
+  openSheet('Train together',`<p style="margin:0">${DAYS_LONG[e.day]} from ${tOf(e)}: who's leading? The leader's focus is used and both of you get the same session.</p>
+    <div class="clips">${members.map(m=>{const me=entryOf(m);
+      return `<button class="btn" type="button" data-lead="${m}" style="justify-content:space-between;width:100%"><span>${USERS[m].name} leads</span><span class="muted" style="font-weight:400">${FOCUS[me.focus]} · ${tOf(me)} · ${me.mins} min</span></button>`}).join('')}</div>`);
+  $('#sheetBody').onclick=ev=>{const b=ev.target.closest('[data-lead]');if(!b)return;
+    const lead=b.dataset.lead, le=entryOf(lead), key='s'+Date.now();
+    S.shared[key]={leader:lead,members,focus:le.focus,mins:le.mins,time:tOf(le),clips:buildSession(le.focus,le.mins,{together:true,can:canUse(le,members),members})};
+    members.forEach(m=>{entryOf(m).sk=key});
+    save();closeSheet();render();toast(`Shared session set · ${USERS[lead].name} leads`);
+  };
+}
+
+/* ---- session view ---- */
+function sessionFor(eid){
+  const u=S.user,e=S.plan[u].find(x=>x.id===eid),sh=shOf(e,u);
+  if(sh) return {obj:sh,focus:sh.focus,mins:sh.mins,shared:true,e};
+  if(!e.clips){e.clips=buildSession(e.focus,e.mins,{outdoor:!!e.outdoor,can:canUse(e,[u]),members:[u]});save()}
+  return {obj:e,focus:e.focus,mins:e.mins,shared:false,e};
+}
+function openSession(eid){
+  const s=sessionFor(eid), o=s.obj, ids=o.clips;
+  const tot=total(ids);
+  const canEdit=!s.shared||o.leader===S.user;
+  const members=s.shared?o.members:[S.user];
+  const can=canUse(s.e,members);
+  const opt=extra=>Object.assign({outdoor:!!s.e.outdoor,together:s.shared,can,members},extra||{});
+  const clash=conflicts(s.e,S.user);
+  const lo=leftOut(s.e,members,s.focus).filter(c=>!clash.some(x=>x.k===c.k));
+  const notes=clash.map(c=>`<li class="bad">⚠ ${esc(conflictText(c))}. Tap Shuffle all to rebuild without it.</li>`).concat(lo.filter(c=>c.by.length).map(c=>`<li>Left out: ${esc(conflictText(c))}</li>`)).concat((()=>{const few=lo.filter(c=>!c.by.length);return few.length?[`<li>Left out, as you only have one each for ${members.length} people: ${few.map(c=>esc(kitById(c.k).name.toLowerCase())).join(', ')}. Add more in Kit or the shopping list.</li>`]:[]})()).join('');
+  openSheet(`${FOCUS[s.focus]} · ${DAYS_LONG[s.e.day]}`,`
+    <div class="sum"><span><b>${ids.length} clip${ids.length===1?'':'s'}</b></span><span><b>${Math.round(tot)} min</b> of ${s.mins} planned${ids.some(id=>(vById(id)||{}).approx)?' (some lengths approximate)':''}</span>${s.shared?`<span class="chip together">Together · ${USERS[o.leader].name} leads</span>`:''}</div>
+    ${notes?`<ul class="kitnotes">${notes}</ul>`:''}
+    ${canEdit&&ids.length&&s.mins-tot>=2?`<div class="short">About ${Math.round(s.mins-tot)} min short. <button class="btn sm" type="button" data-addclip>Add a clip</button> <button class="btn sm" type="button" data-repeatclip>Repeat the last clip</button> <span class="muted">or just finish early.</span></div>`:''}
+    ${s.shared?`<div><button class="btn sm ghost" type="button" data-leave>Leave shared session</button></div>`:''}
+    ${canEdit?`<div class="row"><span class="muted" style="font-size:14px">Time:</span>
+      <button class="btn sm" type="button" data-mins="-5">−5</button><button class="btn sm" type="button" data-mins="5">+5</button>
+      <button class="btn sm" type="button" data-reshuffle>Shuffle all</button>
+      ${!s.shared?`<label class="checks" style="font-size:14px"><span><input type="checkbox" id="outdoorChk" ${s.e.outdoor?'checked':''}> Include garden kit</span></label>`:''}</div>`:`<p class="muted" style="margin:0;font-size:14px">${USERS[o.leader].name} is leading, so only they can change it.</p>`}
+    <div class="clips">${ids.map((id,i)=>{const v=vById(id);if(!v)return'';return `<div class="clip">${thumb(v)}<div class="info"><b>${i+1}. ${esc(v.title)}</b><span class="by">${srcName(v)+(v.creator?' '+esc(v.creator):'')}${v.type?' · '+v.type:''}</span>
+      <div class="tags">${kitChips(v)}${v.together?'<span class="chip together">together</span>':''}</div>
+      ${canEdit?`<div class="side"><button class="btn sm" type="button" data-swap="${i}">Swap</button><button class="btn sm ghost" type="button" data-drop="${i}">Remove</button></div>`:''}
+      ${rateBtns(v.id,`data-i="${i}"`)}</div></div>`}).join('')||'<p class="empty">No videos match yet. Try a different focus, or tick more kit.</p>'}</div>
+    ${ids.length?`<div><button class="btn primary" type="button" data-play="0" style="width:100%">▶ Start follow-along</button></div>`:''}`);
+  const body=$('#sheetBody');
+  body.onclick=ev=>{
+    const t=ev.target.closest('button');if(!t)return;
+    if(t.dataset.play!==undefined){play(ids,0,s.focus,eid);return}
+    if(t.dataset.addclip!==undefined){const c=swapCandidates(o.clips,o.clips.length-1,s.focus,opt()).sort((a,b)=>a.mins-b.mins);const left=s.mins-total(o.clips);const pick=c.find(v=>v.mins<=left+1)||c[0];if(!pick){toast('Nothing else fits yet');return}o.clips.splice(Math.max(0,o.clips.length-(o.clips.length>1&&vById(o.clips[o.clips.length-1]).type==='recovery'?1:0)),0,pick.id);save();openSession(eid);renderWeek();return}
+    if(t.dataset.repeatclip!==undefined){const last=o.clips.filter(id=>!['warmup','recovery'].includes((vById(id)||{}).type)).pop();if(!last){toast('No main clip to repeat');return}o.clips.splice(o.clips.lastIndexOf(last)+1,0,last);save();openSession(eid);renderWeek();return}
+    if(t.dataset.leave!==undefined){leaveShared(s.e,S.user);delete s.e.clips;save();toast('You left the shared session. Your own session is back.');openSession(eid);renderWeek();return}
+    if(t.dataset.rate){const [id,r]=t.dataset.rate.split('|');const now=setRate(S.user,id,r);
+      if(now==='nope'&&canEdit){const i=+t.dataset.i;const c=swapCandidates(o.clips,i,s.focus,opt());if(c.length)o.clips[i]=c[Math.floor(Math.random()*c.length)].id;else o.clips.splice(i,1);toast("Swapped out. It won't come up again.")}
+      else if(now==='nope')toast("Noted. It won't be picked for your sessions.");
+      else if(now==='like')toast('Noted. More like this.');
+      save();openSession(eid);return}
+    if(t.dataset.mins){o.mins=Math.max(5,Math.min(240,o.mins+ +t.dataset.mins));if(!s.shared)s.e.mins=o.mins;o.clips=buildSession(s.focus,o.mins,opt())}
+    if(t.dataset.reshuffle!==undefined)o.clips=buildSession(s.focus,o.mins,opt());
+    if(t.dataset.swap!==undefined){const i=+t.dataset.swap;const c=swapCandidates(o.clips,i,s.focus,opt());if(!c.length){toast('Nothing else to swap in yet');return}
+      o.clips[i]=c[Math.floor(Math.random()*c.length)].id}
+    if(t.dataset.drop!==undefined)o.clips.splice(+t.dataset.drop,1);
+    save();openSession(eid);renderWeek();
+  };
+  const oc=$('#outdoorChk');if(oc)oc.onchange=()=>{s.e.outdoor=oc.checked;o.clips=buildSession(s.focus,o.mins,opt({outdoor:oc.checked}));save();openSession(eid)};
+}
+
+/* ---- follow-along player ---- */
+function play(ids,i,focus,eid){
+  const v=vById(ids[i]);
+  const screen=v.src==='yt'
+    ?`<div class="igcard ytcard"><div><b>${esc(v.title)}</b>Follow-along on YouTube<br><br><a class="btn" href="https://www.youtube.com/watch?v=${esc(v.yt)}" target="_blank" rel="noopener">Play on YouTube ↗</a></div></div>`
+    :`<div class="igcard"><div><b>${esc(v.title)}</b>${v.creator?esc(v.creator)+' on ':''}${srcName(v)}<br><br><a class="btn" href="${esc(v.url)}" target="_blank" rel="noopener">Open on ${srcName(v)} ↗</a></div></div>`;
+  openSheet(`Clip ${i+1} of ${ids.length}`,`<div class="player">
+    <div class="progress">${ids.map((_,j)=>`<i class="${j<=i?'on':''}"></i>`).join('')}</div>
+    <div class="screen">${screen}</div>
+    <div><h3>${esc(v.title)}</h3><p class="muted" style="margin:4px 0 0">${v.approx?'About ':''}${fmtMins(v.mins)} · ${srcName(v)}${v.creator?' · '+esc(v.creator):''}</p></div>
+    ${rateBtns(v.id)}
+    <div class="row"><button class="btn" type="button" data-step="-1" ${i===0?'disabled':''}>← Back</button>
+    <button class="btn primary" type="button" data-step="1" style="flex:1">${i===ids.length-1?'Finish 🎉':'Next clip →'}</button></div></div>`);
+  $('#sheetBody').onclick=ev=>{const rb=ev.target.closest('[data-rate]');if(rb){const [id,r]=rb.dataset.rate.split('|');const now=setRate(S.user,id,r);toast(now==='like'?'Noted. More like this.':now==='nope'?"Noted. It won't be picked again.":'Rating cleared');play(ids,i,focus,eid);return}
+    const b=ev.target.closest('[data-step]');if(!b)return;const n=i+ +b.dataset.step;
+    if(n>=ids.length){closeSheet();if(eid){const e=S.plan[S.user].find(x=>x.id===eid);if(e&&!e.done){markDone(e,S.user,1);render();toast(`+${ptsOf(e,S.user)} points! `+(S.user==='gary'?'Chapeau.':S.user==='lucy'?'Lovely work ✿':'=^.^='));return}}toast(S.user==='gary'?'Session complete. Chapeau.':S.user==='lucy'?'All done, lovely work ✿':'session.exe completed =^.^=');return}
+    if(n>=0)play(ids,n,focus,eid)};
+}
+
+/* ===================== FAMILY ===================== */
+const PCOL={kate:'#1f8a83',gary:'#e0397a',lucy:'#7a62c2'};
+const todayIdx=()=>(new Date().getDay()+6)%7;
+function cumulPts(u,all){let a=0,c=0,bonus=false;const g=goalOf(u);
+  return DAYS.map((_,d)=>{S.plan[u].filter(e=>e.day===d&&(all||e.done)).sort((x,y)=>toMin(tOf(x))-toMin(tOf(y))).forEach(e=>{a+=10+(shOf(e,u)?5:0);c++;if(!bonus&&c>=g){a+=10;bonus=true}});return a})}
+function raceChart(){
+  const users=Object.keys(USERS).filter(inRace),td=todayIdx();
+  const done=Object.fromEntries(users.map(u=>[u,cumulPts(u,false)])),plan=Object.fromEntries(users.map(u=>[u,cumulPts(u,true)]));
+  const max=Math.max(20,...users.map(u=>plan[u][6]),...users.map(u=>done[u][6]));
+  const step=max<=50?10:max<=100?20:50,top=Math.ceil(max/step)*step;
+  const W=360,H=230,L=34,R=14,T=14,B=28;
+  const x=d=>L+d*(W-L-R)/6,y=v=>T+(H-T-B)*(1-v/top);
+  let g='';
+  for(let v=0;v<=top;v+=step)g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" class="gl"/><text x="${L-6}" y="${y(v)+3.5}" text-anchor="end" class="ax">${v}</text>`;
+  DAYS.forEach((d,i)=>g+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle" class="ax ${i===td?'td':''}">${d}</text>`);
+  g+=`<line x1="${x(td)}" x2="${x(td)}" y1="${T}" y2="${H-B}" class="today"/><text x="${x(td)+4}" y="${T+9}" class="ax td">today</text>`;
+  users.forEach(u=>{const pts=plan[u].map((v,i)=>`${x(i)},${y(v)}`).join(' ');g+=`<polyline points="${pts}" fill="none" stroke="${PCOL[u]}" stroke-width="2" stroke-dasharray="4 4" opacity=".45"/>`});
+  users.forEach(u=>{const pts=done[u].slice(0,td+1).map((v,i)=>`${x(i)},${y(v)}`).join(' ');
+    g+=`<polyline points="${pts}" fill="none" stroke="${PCOL[u]}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${x(td)}" cy="${y(done[u][td])}" r="5" fill="${PCOL[u]}" stroke="var(--card)" stroke-width="2"/>`});
+  return `<svg viewBox="0 0 ${W} ${H}" class="race" role="img" aria-label="Points race this week: ${users.map(u=>`${USERS[u].name} ${done[u][6]} points`).join(', ')}">${g}</svg>`;
+}
+function renderRewards(){
+  const users=Object.keys(USERS).filter(inRace),lu=leader(),canPick=lu===S.user,me=S.user;
+  const out=Object.keys(USERS).filter(u=>!inRace(u));
+  const rows=users.map(u=>{const ds=S.plan[u].filter(e=>e.done);return {u,p:weekPts(u),n:ds.length,g:goalOf(u),left:cumulPts(u,true)[6]-weekPts(u),tog:ds.filter(e=>shOf(e,u)).length}}).sort((a,b)=>b.p-a.p);
+  const mine=`<div class="card"><div class="card-bar"><span class="t">${esc(USERS[me].name)}'s week</span><span class="btns"><i></i><i></i><i></i></span></div><div class="card-body" style="display:grid;gap:12px">
+    <div class="row"><span class="lbl">My weekly goal</span><button type="button" class="icon-btn" data-goal="-1" aria-label="Lower goal">−</button><b class="goaln">${goalOf(me)}</b><button type="button" class="icon-btn" data-goal="1" aria-label="Raise goal">+</button><span class="muted" style="font-size:14px">sessions · ${doneCount(me)} done${doneCount(me)>=goalOf(me)?' · goal hit, +10 bonus':''}</span></div>
+    <label class="checks" style="font-size:15px"><span><input type="checkbox" id="raceIn" ${inRace(me)?'checked':''}> I'm in the race this week</span></label>
+    <p class="muted" style="margin:0;font-size:13px">Out of the race? Your sessions still fill the family kit jar.</p></div></div>`;
+  $('#rewards').innerHTML=mine+`<div class="card"><div class="card-bar"><span class="t">The race</span><span class="btns"><i></i><i></i><i></i></span></div><div class="card-body" style="display:grid;gap:12px">
+    ${raceChart()}
+    <p class="muted" style="margin:0;font-size:13px">Solid line: points earned. Dashed line: where you'd finish if you complete your plan.</p>
+    <div class="board">${rows.map((r,i)=>`<div class="lrow"><span class="pos">${i+1}</span><span class="sw" style="background:${PCOL[r.u]}"></span>
+      <div class="ln"><b>${USERS[r.u].name}</b>${r.u===lu?' <span class="chip together">dinner pick</span>':''}<span class="muted">${r.n} of ${r.g} sessions${r.n>=r.g?' ✓':''}${r.tog?` · ${r.tog} together`:''} · up to ${r.left} more on plan</span></div>
+      <b class="lp">${r.p}</b></div>`).join('')||'<p class="muted" style="margin:0">Nobody is racing this week.</p>'}
+      ${out.length?`<p class="muted" style="margin:6px 0 0;font-size:13px">Sitting this week out: ${out.map(u=>USERS[u].name).join(', ')}.</p>`:''}</div>
+  </div></div>
+  <div class="card"><div class="card-bar"><span class="t">Saturday dinner</span><span class="btns"><i></i><i></i><i></i></span></div><div class="card-body dinner">
+    ${lu?(canPick?`<label for="dinnerIn">You're top this week, so you choose. What's for Saturday dinner?</label><input id="dinnerIn" type="text" value="${esc(S.dinner||'')}" placeholder="e.g. homemade pizza">`
+      :`<span>${S.dinner?`${esc(USERS[lu].name)} picked <b>${esc(S.dinner)}</b>.`:`${esc(USERS[lu].name)} is top, so ${esc(USERS[lu].name)} chooses.`} Finish more sessions to take the lead.</span>`):'<span class="muted">Tied at the top. Finish a session to take the lead and pick dinner.</span>'}
+  </div></div>
+  <div class="card"><div class="card-body">${jarHtml()}</div></div>
+  <p class="muted howpts">10 points for every finished session, whatever its length. +5 for training together. +10 when you hit your own weekly goal.</p>`;
+}
+function startNextWeek(){
+  S.jarBank=(S.jarBank||0)+famPts();
+  S.lastWeek={};for(const u in S.plan)S.lastWeek[u]=S.plan[u].map(e=>{const c={...e};delete c.done;delete c.sk;delete c.id;delete c.outdoor;return c});
+  for(const u in S.plan)S.plan[u]=[];
+  S.shared={};S.dinner='';S.optOut={};S.weekNo=(S.weekNo||1)+1;save();render();toast('New week started. The kit jar kept its points.');
+}
+function renderFamily(){
+  $('#weekCtl').innerHTML=`<div class="card"><div class="card-body" style="display:grid;gap:8px"><b>Week ${S.weekNo||1}</b>
+    <span class="muted" style="font-size:14px">When this week is over, start the next. Ticks and points reset, the kit jar keeps its points, and everyone can repeat their week or start fresh.</span>
+    <div><button class="btn sm" type="button" id="newWeekBtn">Start next week</button></div></div></div>`;
+  const cls={kate:'k',gary:'g',lucy:'l'};
+  let h=`<thead><tr><th scope="col"><span class="sr">Day</span></th>${Object.values(USERS).map(x=>`<th scope="col">${x.name}</th>`).join('')}</tr></thead><tbody>`;
+  DAYS.forEach((d,i)=>{h+=`<tr><td class="d">${d}</td>`+Object.keys(USERS).map(u=>`<td>${S.plan[u].filter(e=>e.day===i).sort((a,b)=>toMin(tOf(a))-toMin(tOf(b))).map(e=>{
+    const sh=shOf(e,u);
+    const f=sh?sh.focus:e.focus;
+    return `<span class="pill ${cls[u]} ${sh?'tog':''}">${KINDS[e.kind].ico} ${esc(e.kind==='gym'?FOCUS[f]:(e.label||KINDS[e.kind].label))}<br><span class="muted">${tOf(e)}${sh?' · together':''}</span></span>`}).join('')||''}</td>`).join('')+'</tr>'});
+  $('#famTable').innerHTML=h+'</tbody>';
+}
+
+/* ===================== KIT ===================== */
+function unlocks(kid){return videos().filter(v=>v.kit.includes(kid))}
+function renderKit(){
+  const all=videos(),rd=all.filter(ready).length;
+  $('#kitStats').innerHTML=`<div><b>${S.kit.filter(k=>k.owned).length}</b>pieces of kit</div><div><b>${rd}</b>videos ready</div><div><b>${all.length-rd}</b>still locked</div>`;
+  const groups=[...new Set(S.kit.map(k=>k.group))];
+  $('#kitList').innerHTML=groups.map(g=>`<div class="kit-group"><h3>${g}</h3>${S.kit.filter(k=>k.group===g).map(k=>{const n=unlocks(k.id).length;
+    const bk=k.owned?usages().filter(x=>x.kit.includes(k.id)).sort((a,b)=>a.e.day-b.e.day||toMin(tOf(a.e))-toMin(tOf(b.e))):[];
+    const cl=k.owned&&perPerson(k.id)?clashes(k.id):0;
+    return `<div class="kit ${k.owned?'':'off'}"><input type="checkbox" id="kit-${k.id}" data-kit="${k.id}" ${k.owned?'checked':''}>
+      <label class="nm" for="kit-${k.id}">${esc(k.name)}${k.loc==='garden'?'<span class="chip">garden</span>':''}${cl?`<span class="chip bad">${cl} clash${cl>1?'es':''}</span>`:''}</label>
+      <span class="meta">${k.perk?esc(k.perk):n?`Used in ${n} video${n>1?'s':''}`:'No videos yet'}</span>
+      ${k.owned&&!k.perk?`<div class="qty" role="group" aria-label="How many ${esc(k.name)}"><span>How many</span><button type="button" class="icon-btn" data-q="-1" data-qk="${k.id}" aria-label="One fewer">−</button><b>${k.qty||1}</b><button type="button" class="icon-btn" data-q="1" data-qk="${k.id}" aria-label="One more">+</button></div>
+      <input class="detail" type="text" data-detail="${k.id}" value="${esc(k.detail)}" placeholder="Details, e.g. 2 × 5 kg, medium + heavy" aria-label="Details for ${esc(k.name)}">`:''}
+      ${bk.length?`<ul class="bookings">${bk.map(x=>`<li><b>${DAYS[x.e.day]} ${tOf(x.e)}–${endOf(x.e)}</b> ${esc(who(x))}</li>`).join('')}</ul>`:''}</div>`}).join('')}</div>`).join('');
+}
+
+/* ===================== SHOP ===================== */
+/* Priority = family votes first, then benefit.
+   Votes: Must have +3 · Want +1 · Later −2 per person.
+   Benefit: videos unlocked (½ each, up to 6) · clashes fixed (2 each) · shared sessions opened up (1½ each) · setup essential (2). */
+/* Line drawings of the kit (photos can't load in a private page). 64×64, stroke = currentColor, .f = accent tint. */
+const ICONS={
+ flooring:'<path class="f" d="M6 40 32 26 58 40 32 54Z"/><path d="M6 40 32 26 58 40 32 54Z M19 33 45 47 M45 33 19 47"/><path d="M6 40v6l26 14 26-14v-6"/>',
+ lights:'<path class="f" d="M32 10a14 14 0 0 0-8 25v6h16v-6a14 14 0 0 0-8-25Z"/><path d="M32 10a14 14 0 0 0-8 25v6h16v-6a14 14 0 0 0-8-25Z M26 47h12 M28 52h8 M32 2v3 M12 12l3 3 M52 12l-3 3 M6 26h4 M54 26h4"/>',
+ mirror:'<rect class="f" x="20" y="6" width="24" height="46" rx="12"/><rect x="20" y="6" width="24" height="46" rx="12"/><path d="M27 22l8-8 M27 32l11-11 M24 52l-5 8 M40 52l5 8"/>',
+ tv:'<rect class="f" x="8" y="12" width="48" height="32" rx="3"/><rect x="8" y="12" width="48" height="32" rx="3"/><path d="M24 56h16 M32 44v12"/><path d="M28 22l10 6-10 6Z"/>',
+ wallbars:'<path d="M18 6v52 M46 6v52 M18 14h28 M18 22h28 M18 30h28 M18 38h28 M18 46h28"/><path class="f" d="M14 58h36v2H14Z"/>',
+ reformer:'<rect class="f" x="6" y="30" width="52" height="10" rx="3"/><rect x="6" y="30" width="52" height="10" rx="3"/><rect x="20" y="22" width="18" height="8" rx="2"/><path d="M10 40v10 M54 40v10 M50 20v10 M38 26h12"/>',
+ rower:'<circle class="f" cx="14" cy="36" r="9"/><circle cx="14" cy="36" r="9"/><path d="M23 40h35 M6 50h52 M20 50v-5 M54 50v-10"/><rect x="34" y="34" width="12" height="6" rx="2"/>',
+ bench:'<rect class="f" x="10" y="24" width="44" height="9" rx="3"/><rect x="10" y="24" width="44" height="9" rx="3"/><path d="M18 33v17 M46 33v17 M12 50h12 M40 50h12"/>',
+ barbell:'<path d="M4 32h56"/><rect class="f" x="12" y="18" width="7" height="28" rx="2"/><rect x="12" y="18" width="7" height="28" rx="2"/><rect class="f" x="45" y="18" width="7" height="28" rx="2"/><rect x="45" y="18" width="7" height="28" rx="2"/><rect x="19" y="23" width="4" height="18" rx="1"/><rect x="41" y="23" width="4" height="18" rx="1"/>',
+ turbo:'<circle class="f" cx="18" cy="40" r="11"/><circle cx="18" cy="40" r="11"/><circle cx="46" cy="40" r="11"/><path d="M18 40l10-16h14l4 16 M28 24l-3-6h-6 M42 24l2-6h6 M40 58l6-7 6 7"/>',
+ kettlebell:'<path d="M24 24a8 8 0 0 1 16 0"/><path class="f" d="M21 24h22l4 6a16 16 0 1 1-30 0Z"/><path d="M21 24h22l4 6a16 16 0 1 1-30 0Z"/>',
+ dumbbells:'<path d="M18 32h28"/><rect class="f" x="7" y="21" width="11" height="22" rx="3"/><rect x="7" y="21" width="11" height="22" rx="3"/><rect class="f" x="46" y="21" width="11" height="22" rx="3"/><rect x="46" y="21" width="11" height="22" rx="3"/>',
+ mat:'<rect class="f" x="18" y="34" width="40" height="12" rx="2"/><rect x="18" y="34" width="40" height="12" rx="2"/><circle cx="14" cy="34" r="9"/><circle cx="14" cy="34" r="4"/>',
+ yogablocks:'<path class="f" d="M12 26l20-10 20 10v18l-20 10-20-10Z"/><path d="M12 26l20-10 20 10v18l-20 10-20-10Z M12 26l20 10 20-10 M32 36v18"/>',
+ band:'<ellipse class="f" cx="32" cy="32" rx="22" ry="13"/><ellipse cx="32" cy="32" rx="22" ry="13"/><ellipse cx="32" cy="32" rx="15" ry="7"/>',
+ foamroller:'<rect class="f" x="10" y="22" width="44" height="20" rx="10"/><rect x="10" y="22" width="44" height="20" rx="10"/><ellipse cx="20" cy="32" rx="5" ry="10"/><path d="M30 26v12 M38 26v12 M46 26v12"/>',
+ ball:'<circle class="f" cx="32" cy="34" r="22"/><circle cx="32" cy="34" r="22"/><path d="M14 26c10 6 26 6 36 0 M20 50c6-8 18-8 24 0"/>',
+ rope:'<path d="M14 12v14 M50 12v14 M14 26c0 30 36 30 36 0"/><rect class="f" x="10" y="6" width="8" height="10" rx="3"/><rect x="10" y="6" width="8" height="10" rx="3"/><rect class="f" x="46" y="6" width="8" height="10" rx="3"/><rect x="46" y="6" width="8" height="10" rx="3"/>',
+ parallettes:'<path d="M8 24h20 M36 24h20 M12 24v20 M24 24v20 M40 24v20 M52 24v20 M8 44h20 M36 44h20"/><path class="f" d="M8 44h20v4H8Z M36 44h20v4H36Z"/>',
+ doorbar:'<path d="M14 58V8h36v50"/><path class="f" d="M10 18h44v5H10Z"/><path d="M10 18h44v5H10Z"/>',
+ trampoline:'<ellipse class="f" cx="32" cy="28" rx="26" ry="9"/><ellipse cx="32" cy="28" rx="26" ry="9"/><path d="M10 33l4 18 M54 33l-4 18 M26 37l-2 16 M38 37l2 16"/>',
+ box:'<rect class="f" x="12" y="18" width="40" height="34" rx="3"/><rect x="12" y="18" width="40" height="34" rx="3"/><path d="M12 28h40 M28 18v10"/>'
+};
+const ICON_OF={longbands:'band',minibands:'band',acroblocks:'yogablocks',stabilityball:'ball',pilatesball:'ball',beam:'bench'};
+const icon=id=>`<svg viewBox="0 0 64 64" class="kicon" aria-hidden="true">${ICONS[id]||ICONS[ICON_OF[id]]||ICONS.box}</svg>`;
+const TIERS=[['setup','Garage setup','The room itself: one-off purchases that make the space work'],['big','Big equipment','Large pieces that need floor or wall space'],['small','Small equipment','Smaller kit and extra sets']];
+const BIG=new Set(['wallbars','reformer','rower','bench','barbell','turbo','trampoline']);
+const tierOf=k=>k.group==='Garage setup'?'setup':BIG.has(k.id)?'big':'small';
+const VOTE={must:{l:'Must have',p:3},want:{l:'Want',p:1},later:{l:'Later',p:-2}};
+function eveningSessions(){let n=0;for(const u in S.plan)S.plan[u].forEach(e=>{if(e.kind==='gym'&&(toMin(tOf(e))>=17*60||toMin(tOf(e))<8*60))n++});return n}
+function shopItems(){
+  const items=[];
+  S.kit.filter(k=>!k.owned).forEach(k=>{const vs=unlocks(k.id);const newly=vs.filter(v=>v.kit.every(x=>x===k.id||owned(x)));
+    const why=[];let ben=0;
+    if(newly.length){why.push(`Unlocks ${newly.length} video${newly.length>1?'s':''} · ${Math.round(newly.reduce((a,v)=>a+v.mins,0))} min`);ben+=Math.min(newly.length,6)*.5}
+    if(k.essential){why.push('Garage setup essential');ben+=2}
+    if(k.id==='lights'){const n=eveningSessions();if(n)why.push(`${n} dark-hour session${n>1?'s':''} this week`)}
+    items.push({key:k.id,k,name:k.name,ben,why,newly,perk:k.perk})});
+  S.kit.filter(k=>k.owned&&perPerson(k.id)).forEach(k=>{const cl=clashes(k.id),lim=sharedLimited(k.id);if(!cl&&!lim)return;
+    const why=[`You have ${k.qty||1}`];if(cl)why.push(`Fixes ${cl} clash${cl>1?'es':''} this week`);if(lim)why.push(`Opens up ${lim} shared session${lim>1?'s':''}`);
+    items.push({key:'more:'+k.id,k,more:1,name:extraName(k),ben:cl*2+lim*1.5,why,newly:[]})});
+  const votes=S.votes||{};
+  items.forEach(it=>{const v=votes[it.key]||{};it.votes=v;it.fam=Object.values(v).reduce((a,x)=>a+((VOTE[x]||{}).p||0),0);it.score=it.fam+it.ben;
+    const pr=(S.prices||{})[it.key];it.price=pr===''||pr==null?null:+pr});
+  const sort=S.shopSort||'family';
+  items.sort(sort==='videos'?(a,b)=>b.newly.length-a.newly.length||b.score-a.score
+    :sort==='cheap'?(a,b)=>(a.price??1e9)-(b.price??1e9)||b.score-a.score
+    :(a,b)=>b.score-a.score||b.ben-a.ben);
+  return items;
+}
+function renderShop(){
+  const items=shopItems(),u=S.user,budget=+S.budget||0;
+  let run=0;items.forEach(it=>{if(it.price==null){it.fit=null;return}run+=it.price;it.fit=budget?run<=budget:null});
+  const priced=items.filter(i=>i.price!=null),fits=items.filter(i=>i.fit);
+  const fitCost=fits.reduce((a,i)=>a+i.price,0);
+  const top=TIERS.map(([t,label])=>{const its=items.filter(it=>tierOf(it.k)===t).sort((a,b)=>b.score-a.score||b.ben-a.ben);return its[0]?{it:its[0],label}:null}).filter(Boolean);
+  $('#shopTop').innerHTML=`<div class="card"><div class="card-body">${jarHtml()}</div></div>`+(top.length?`<div class="tops" aria-label="Top priorities">${top.map(({it,label})=>`<button type="button" class="toppick" data-jump="${esc(it.key)}">
+      <span class="pic">${icon(it.k.id)}</span><span class="tl">${label}</span><b>${esc(it.name)}</b>${it.fam?`<span class="chip together">Family ${it.fam>0?'+':''}${it.fam}</span>`:''}</button>`).join('')}</div>`:'')+`<div class="card"><div class="card-bar"><span class="t">Prioritise</span><span class="btns"><i></i><i></i><i></i></span></div><div class="card-body shopctl">
+    <p class="muted" style="margin:0">Vote on each item as ${USERS[u].name}. Switch person at the top to vote for them. Must have = 3 points, Want = 1, Later = −2; then the list adds what each item unlocks.</p>
+    <div class="row"><span class="lbl">Sort</span><div class="seg">${[['family','Family priority'],['videos','Most videos'],['cheap','Cheapest']].map(([k,l])=>`<button type="button" data-sort="${k}" aria-pressed="${(S.shopSort||'family')===k}">${l}</button>`).join('')}</div></div>
+    <div class="row"><label class="lbl" for="budget">Budget £</label><input class="money" id="budget" type="number" min="0" step="10" inputmode="numeric" value="${esc(S.budget||'')}" placeholder="e.g. 500">
+      <span class="muted" style="font-size:14px">${budget?(priced.length?`${fits.length} item${fits.length===1?'':'s'} fit, £${fitCost} of £${budget}`:'Add price estimates below to see what fits'):'Optional. Add rough prices to plan spending.'}</span></div>
+  </div></div>`;
+  const card=(it,i)=>{
+    const others=Object.keys(USERS).filter(x=>x!==u).map(x=>`${USERS[x].name}: ${it.votes[x]?VOTE[it.votes[x]].l:'no vote'}`).join(' · ');
+    const mine=it.votes[u];
+    return `<article class="buy" id="buy-${esc(it.key.replace(':','-'))}"><span class="rank" aria-hidden="true">${i+1}</span><div class="bd"><span class="mini">${icon(it.k.id)}</span>
+    <h3>${esc(it.name)}</h3>
+    <div class="why">${it.fam?`<span class="chip ${it.fam>0?'together':''}">Family ${it.fam>0?'+':''}${it.fam}</span>`:''}${it.why.map(w=>`<span class="chip">${esc(w)}</span>`).join('')}${it.fit===true?'<span class="chip have">In budget</span>':it.fit===false?'<span class="chip need">After budget</span>':''}</div>
+    ${it.perk?`<span class="muted" style="font-size:14px">${esc(it.perk)}</span>`:''}
+    ${it.newly.length?`<ul>${it.newly.slice(0,2).map(v=>`<li>${esc(v.title)}</li>`).join('')}${it.newly.length>2?`<li>+ ${it.newly.length-2} more</li>`:''}</ul>`:''}
+    <div class="seg vote" role="group" aria-label="${esc(USERS[u].name)}'s vote">${Object.entries(VOTE).map(([k,v])=>`<button type="button" data-vote="${esc(it.key)}" data-v="${k}" aria-pressed="${mine===k}">${v.l}</button>`).join('')}</div>
+    <span class="muted" style="font-size:13px">${others}</span>
+    <div class="row"><label class="lbl" for="pr-${esc(it.key)}">£</label><input class="money" id="pr-${esc(it.key)}" type="number" min="0" step="5" inputmode="numeric" data-price="${esc(it.key)}" value="${it.price??''}" placeholder="estimate">
+      <button class="btn sm primary" type="button" ${it.more?`data-more="${it.k.id}"`:`data-buy="${it.k.id}"`}>We bought it!</button></div>
+    </div></article>`};
+  $('#shopList').innerHTML=TIERS.map(([t,label,note])=>{const its=items.filter(it=>tierOf(it.k)===t);if(!its.length)return'';
+    const pr=its.filter(i=>i.price!=null),sum=pr.reduce((a,i)=>a+i.price,0);
+    return `<section class="shopgroup" aria-label="${label}"><div class="grouphead"><h3>${label}</h3><span class="muted">${its.length} item${its.length>1?'s':''}${pr.length?` · £${sum} priced`:''}</span></div><p class="muted groupnote">${note}</p>${its.map(card).join('')}</section>`}).join('')
+    ||'<div class="card"><div class="card-body">Nothing left to buy. The garage is complete!</div></div>';
+}
+
+/* ===================== LIBRARY ===================== */
+function renderLib(){
+  const all=videos();
+  $('#libCount').textContent=`${all.length} videos · ${all.filter(ready).length} ready`;
+  $('#libFocus').innerHTML=[['all','All'],...Object.entries(FOCUS)].map(([k,l])=>`<button type="button" data-lf="${k}" aria-pressed="${S.libFocus===k}">${l}</button>`).join('');
+  $('#libShow').innerHTML=[['all','Everything'],['inbox',`Inbox${all.filter(v=>v.inbox).length?' ('+all.filter(v=>v.inbox).length+')':''}`],['ready','Ready now'],['locked','Locked'],['ig','From Instagram'],['together','Together'],['liked','Liked'],['nope','Not again']].map(([k,l])=>`<button type="button" data-ls="${k}" aria-pressed="${S.libShow===k}">${l}</button>`).join('');
+  const list=all.filter(v=>(S.libFocus==='all'||v.focus.includes(S.libFocus))&&({all:1,inbox:!!v.inbox,ready:ready(v)&&!v.inbox,locked:!ready(v),ig:v.src==='ig',together:!!v.together,liked:rateOf(S.user,v.id)==='like',nope:rateOf(S.user,v.id)==='nope'})[S.libShow]);
+  $('#libList').innerHTML=list.map(v=>{const lk=!ready(v);return `<div class="clip ${lk?'locked':''} ${rateOf(S.user,v.id)==='nope'?'noped':''}">${thumb(v,lk)}<div class="info"><b>${esc(v.title)}</b>
+    <span class="by">${srcName(v)}${v.creator?' '+esc(v.creator):''} · ${v.inbox?'<b>Not tagged yet</b>':v.focus.map(f=>FOCUS[f]).join(', ')}</span>
+    <div class="tags">${kitChips(v)}${v.together?'<span class="chip together">together</span>':''}${v.outdoor?'<span class="chip">garden</span>':''}</div>
+    <div class="side">${lk?'':`<button class="btn sm" type="button" data-preview="${v.id}">▶ Preview</button>`}${v.inbox?`<button class="btn sm primary" type="button" data-tag="${v.id}">Tag it</button>`:v.custom?`<button class="btn sm ghost" type="button" data-tag="${v.id}">Edit tags</button>`:''}</div>${v.inbox?'':rateBtns(v.id)}</div></div>`}).join('')||'<p class="empty">Nothing matches those filters.</p>';
+  const inbox=all.filter(v=>v.inbox);
+  $('#inboxNote').innerHTML=inbox.length&&S.libShow!=='inbox'?`<div class="banner" style="margin:12px 0"><b>${inbox.length} clip${inbox.length>1?'s':''} waiting in your inbox</b><span>Add a focus and any kit so they can go into sessions.</span><div class="row"><button class="btn sm primary" type="button" data-ls="inbox">Open inbox</button></div></div>`:'';
+}
+
+/* ===================== SHEET ===================== */
+let lastFocus=null;
+function openSheet(title,html){lastFocus=lastFocus||document.activeElement;$('#sheetTitle').textContent=title;$('#sheetBody').innerHTML=html;$('#sheetBody').onclick=null;$('#sheet').classList.add('open');$('#sheetClose').focus()}
+function closeSheet(){$('#sheet').classList.remove('open');$('#sheetBody').innerHTML='';if(lastFocus&&lastFocus.focus)lastFocus.focus();lastFocus=null}
+$('#sheetClose').addEventListener('click',closeSheet);
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#sheet').classList.contains('open'))closeSheet()});
+
+/* ===================== POINTS & REWARDS =====================
+   Every finished session is worth the same, whatever its length: 10 points.
+   +5 for training together. +10 once you hit your own weekly goal (number of sessions you set).
+   The race is opt-in. Weekly winner picks Saturday dinner; everyone's points fill the family kit jar. */
+const goalOf=u=>(S.goals||{})[u]||3;
+const inRace=u=>!(S.optOut||{})[u];
+const ptsOf=(e,u)=>e.done?10+(shOf(e,u)?5:0):0;
+const doneCount=u=>S.plan[u].filter(e=>e.done).length;
+const weekPts=u=>S.plan[u].reduce((a,e)=>a+ptsOf(e,u),0)+(doneCount(u)>=goalOf(u)?10:0);
+const famPts=()=>Object.keys(USERS).reduce((a,u)=>a+weekPts(u),0);
+const jarNow=()=>Math.max(0,famPts()+(S.jarBank||0)-(S.jarSpent||0));
+const jarGoal=()=>+S.jarGoal||100;
+function jarTarget(){const it=shopItems().filter(i=>!i.more)[0];return it?it.name:'your next piece of kit'}
+function leader(){const r=Object.keys(USERS).filter(inRace).map(u=>({u,p:weekPts(u)})).sort((a,b)=>b.p-a.p);if(!r.length||!r[0].p)return null;return !r[1]||r[0].p>r[1].p?r[0].u:null}
+function markDone(e,u,val){
+  const sh=shOf(e,u);
+  if(sh&&val)for(const m of sh.members){const me=S.plan[m].find(x=>x.sk===e.sk);if(me)me.done=1}
+  else e.done=val?1:0;
+  save();
+}
+function jarHtml(){
+  const now=jarNow(),goal=jarGoal(),pct=Math.min(100,now/goal*100),full=now>=goal;
+  return `<div class="jar ${full?'full':''}"><div class="jartop"><b>Family kit jar</b><span>${Math.min(now,goal)} / ${goal} pts</span></div>
+    <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+    <span class="muted" style="font-size:14px">${full?`Jar's full! You've earned ${esc(jarTarget())}.`:`${goal-now} points to go until you've earned ${esc(jarTarget())}.`}</span>
+    ${full?'<div><button class="btn sm primary" type="button" data-spendjar>Spend the jar</button></div>':''}</div>`;
+}
+
+/* ===================== PINS =====================
+   Each person can set a 4-digit PIN so nobody else can open their week or vote for them.
+   A family lock on this device, not real security. */
+function switchTo(u){S.user=u;save();closeSheet();render();window.scrollTo({top:0});toast(`Hi ${USERS[u].name}`)}
+const pinField=(id,label)=>`<label>${label}<input type="password" id="${id}" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="off" required style="max-width:140px;letter-spacing:.4em;font-size:20px"></label>`;
+function openSwitch(u){
+  S.pins=S.pins||{};const name=USERS[u].name,has=!!S.pins[u];
+  openSheet(`Switch to ${name}`,`<form class="form" id="pinForm" style="margin:0">
+    ${has?`<p style="margin:0">Enter ${name}'s PIN to open their week and votes.</p>${pinField('pinIn','PIN')}`
+         :`<p style="margin:0">${name} hasn't set a PIN yet. Set one now so only ${name} can change their plans and votes.</p>${pinField('pinIn','New 4-digit PIN')}`}
+    <p class="warn" id="pinErr" hidden></p>
+    <div class="row"><button class="btn primary" type="submit">${has?'Unlock':'Set PIN and switch'}</button>${has?'':`<button class="btn ghost" type="button" id="pinSkip">Skip for now</button>`}</div></form>`);
+  const f=$('#pinForm'),inp=$('#pinIn');setTimeout(()=>inp.focus(),50);
+  f.onsubmit=ev=>{ev.preventDefault();const v=inp.value.trim();
+    if(!/^\d{4}$/.test(v)){$('#pinErr').hidden=false;$('#pinErr').textContent='Enter 4 digits.';return}
+    if(has){if(v!==S.pins[u]){$('#pinErr').hidden=false;$('#pinErr').textContent="That PIN doesn't match. Try again.";inp.value='';inp.focus();return}}
+    else S.pins[u]=v;
+    switchTo(u)};
+  const sk=$('#pinSkip');if(sk)sk.onclick=()=>switchTo(u);
+}
+function openPin(){
+  S.pins=S.pins||{};const u=S.user,name=USERS[u].name,has=!!S.pins[u];
+  openSheet(`${name}'s PIN`,`<form class="form" id="pinForm" style="margin:0">
+    ${has?pinField('pinOld','Current PIN'):''}${pinField('pinIn','New 4-digit PIN')}
+    <p class="warn" id="pinErr" hidden></p>
+    <div class="row"><button class="btn primary" type="submit">Save PIN</button>${has?'<button class="btn ghost" type="button" id="pinOff">Remove PIN</button>':''}</div></form>`);
+  const f=$('#pinForm'),err=m=>{$('#pinErr').hidden=false;$('#pinErr').textContent=m};
+  const okOld=()=>!has||$('#pinOld').value===S.pins[u];
+  f.onsubmit=ev=>{ev.preventDefault();if(!okOld())return err("Current PIN doesn't match.");const v=$('#pinIn').value.trim();if(!/^\d{4}$/.test(v))return err('Enter 4 digits.');
+    S.pins[u]=v;save();closeSheet();renderShell();toast('PIN saved')};
+  const off=$('#pinOff');if(off)off.onclick=()=>{if(!okOld())return err('Enter your current PIN to remove it.');delete S.pins[u];save();closeSheet();renderShell();toast('PIN removed')};
+}
+
+/* ===================== EVENTS ===================== */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b||!b.isConnected||b.closest('#sheet'))return;
+  if(b.dataset.user){if(b.dataset.user!==S.user)openSwitch(b.dataset.user);return}
+  if(b.id==='pinBtn')return openPin();
+  if(b.id==='newWeekBtn'){if(b.dataset.armed){startNextWeek()}else{b.dataset.armed='1';b.textContent='Tap again to start next week';setTimeout(()=>{if(b.isConnected){delete b.dataset.armed;b.textContent='Start next week'}},3000)}return}
+  if(b.dataset.repeat!==undefined){const u=S.user;S.plan[u]=(S.lastWeek[u]||[]).map((e,i)=>({...e,id:'e'+Date.now()+i}));save();render();toast('Last week repeated. Edit anything that has changed.');return}
+  if(b.dataset.tab){S.tab=b.dataset.tab;save();render();window.scrollTo({top:0});return}
+  if(b.dataset.add!==undefined)return openAdd(+b.dataset.add);
+  if(b.dataset.open)return openSession(b.dataset.open);
+  if(b.dataset.edit)return openAdd(null,b.dataset.edit);
+  if(b.dataset.together)return openTogether(b.dataset.together);
+  if(b.dataset.del){const u=S.user,e2=S.plan[u].find(x=>x.id===b.dataset.del);S.plan[u]=S.plan[u].filter(x=>x!==e2);
+    leaveShared(e2,u);
+    save();render();toast('Removed');return}
+  if(b.dataset.buy){const k=kitById(b.dataset.buy);const before=videos().filter(ready).length;k.owned=true;save();render();
+    const n=videos().filter(ready).length-before;toast(k.perk?`${k.name} added. Big-screen mode unlocked!`:`${k.name} added · ${n} new video${n===1?'':'s'} unlocked`);return}
+  if(b.dataset.more){const k=kitById(b.dataset.more);k.qty=(k.qty||1)+1;save();render();toast(`Now ${k.qty} × ${k.name.toLowerCase()}`);return}
+  if(b.dataset.qk){const k=kitById(b.dataset.qk);k.qty=Math.max(1,Math.min(8,(k.qty||1)+ +b.dataset.q));save();renderKit();return}
+  if(b.dataset.vote){S.votes=S.votes||{};const v=S.votes[b.dataset.vote]=S.votes[b.dataset.vote]||{};if(v[S.user]===b.dataset.v)delete v[S.user];else v[S.user]=b.dataset.v;save();renderShop();return}
+  if(b.dataset.jump){const el=document.getElementById('buy-'+b.dataset.jump.replace(':','-'));if(el){el.scrollIntoView({behavior:'smooth',block:'start'})}return}
+  if(b.dataset.done){const e=S.plan[S.user].find(x=>x.id===b.dataset.done);const v=!e.done;const hit=doneCount(S.user)>=goalOf(S.user);markDone(e,S.user,v);render();if(v)toast(!hit&&doneCount(S.user)>=goalOf(S.user)?`+${ptsOf(e,S.user)} points. Weekly goal hit: +10 bonus!`:`+${ptsOf(e,S.user)} points`);return}
+  if(b.dataset.spendjar!==undefined){S.jarSpent=(S.jarSpent||0)+jarGoal();save();render();toast('Jar spent. Enjoy the new kit!');return}
+  if(b.dataset.rate){const [id,r]=b.dataset.rate.split('|');const now=setRate(S.user,id,r);renderLib();toast(now==='like'?'Noted. More like this.':now==='nope'?"Noted. It won't be picked again.":'Rating cleared');return}
+  if(b.dataset.goal){S.goals=S.goals||{};S.goals[S.user]=Math.max(1,Math.min(14,goalOf(S.user)+ +b.dataset.goal));save();render();return}
+  if(b.dataset.sort){S.shopSort=b.dataset.sort;save();renderShop();return}
+  if(b.dataset.lf){S.libFocus=b.dataset.lf;save();renderLib();return}
+  if(b.dataset.ls){S.libShow=b.dataset.ls;save();renderLib();return}
+  if(b.dataset.preview)return play([b.dataset.preview],0);
+  if(b.dataset.tag)return openTag(b.dataset.tag);
+  if(b.id==='resetBtn'){if(b.dataset.armed){S=fresh();save();render();toast('Demo reset')}else{b.dataset.armed='1';b.textContent='Tap again to reset';setTimeout(()=>{delete b.dataset.armed;b.textContent='Reset demo'},3000)}}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.kit){const k=kitById(t.dataset.kit);const before=videos().filter(ready).length;k.owned=t.checked;save();renderKit();
+    const n=videos().filter(ready).length-before;toast(n>0?`${n} video${n===1?'':'s'} unlocked`:n<0?`${-n} video${n===-1?'':'s'} locked`:t.checked?'Added to the garage':'Removed')}
+  if(t.dataset.detail){kitById(t.dataset.detail).detail=t.value;save()}
+  if(t.dataset.price!==undefined){S.prices=S.prices||{};S.prices[t.dataset.price]=t.value;save();renderShop()}
+  if(t.id==='raceIn'){S.optOut=S.optOut||{};if(t.checked)delete S.optOut[S.user];else S.optOut[S.user]=1;save();render();toast(t.checked?"You're in the race":'Sitting this week out')}
+  if(t.id==='dinnerIn'){S.dinner=t.value.trim();save();toast('Dinner chosen')}
+  if(t.id==='budget'){S.budget=t.value;save();renderShop()}
+});
+$('#addForm').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target,d=new FormData(f);const url=d.get('url').trim();
+  const ytm=url.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
+  const ig=url.match(/instagram\.com\/([\w.]+)\//);
+  const v={id:'c'+Date.now(),src:ytm?'yt':/instagram\.com/.test(url)?'ig':'web',yt:ytm?ytm[1]:undefined,url,title:d.get('title').trim(),
+    creator:ig&&!['p','reel','reels','stories','tv'].includes(ig[1])?'@'+ig[1]:'',mins:+d.get('mins')||1,focus:[],type:'strength',kit:[],together:0,inbox:1,custom:1};
+  S.custom.push(v);save();f.reset();renderLib();toast('Saved to your inbox');
+});
+function openTag(id){
+  const v=vById(id);if(!v)return;
+  const TYPES={warmup:'Warm-up',strength:'Strength',core:'Core',cardio:'Cardio',mobility:'Mobility',recovery:'Cool-down / recovery',skill:'Skill'};
+  openSheet('Tag this clip',`<form class="form" id="tagForm" style="margin:0">
+    <p style="margin:0"><b>${esc(v.title)}</b><br><span class="muted">${srcName(v)}${v.creator?' '+esc(v.creator):''}</span></p>
+    <div class="two"><label>Length (minutes)<input type="number" name="mins" min="0.5" max="60" step="0.5" value="${v.mins}" required></label>
+    <label>Type<select name="type">${Object.entries(TYPES).map(([k,l])=>`<option value="${k}" ${v.type===k?'selected':''}>${l}</option>`).join('')}</select></label></div>
+    <fieldset style="border:0;padding:0;margin:0"><legend style="font-size:14px;font-weight:700;margin-bottom:4px">Focus (pick at least one)</legend><div class="checks">${Object.entries(FOCUS).map(([k,l])=>`<label><input type="checkbox" name="focus" value="${k}" ${v.focus.includes(k)?'checked':''}> ${l}</label>`).join('')}</div></fieldset>
+    <fieldset style="border:0;padding:0;margin:0"><legend style="font-size:14px;font-weight:700;margin-bottom:4px">Kit needed</legend><div class="checks">${S.kit.filter(k=>!k.perk).map(k=>`<label><input type="checkbox" name="kit" value="${k.id}" ${v.kit.includes(k.id)?'checked':''}> ${esc(k.name)}</label>`).join('')}</div></fieldset>
+    <label class="checks" style="font-weight:400"><span><input type="checkbox" name="together" ${v.together?'checked':''}> Good to do together</span></label>
+    <p class="warn" id="tagErr" hidden></p>
+    <div class="row"><button class="btn primary" type="submit">Save tags</button><button class="btn ghost" type="button" id="tagDel">Delete clip</button></div></form>`);
+  const f=$('#tagForm');
+  f.onsubmit=ev=>{ev.preventDefault();const d=new FormData(f);const fc=d.getAll('focus');if(!fc.length){$('#tagErr').hidden=false;$('#tagErr').textContent='Pick at least one focus.';return}
+    Object.assign(v,{mins:+d.get('mins')||v.mins,type:d.get('type'),focus:fc,kit:d.getAll('kit'),together:d.get('together')?1:0,outdoor:d.getAll('kit').some(k=>(kitById(k)||{}).loc==='garden')?1:0});delete v.inbox;
+    save();closeSheet();renderLib();toast('Tagged. It can now go into sessions.')};
+  $('#tagDel').onclick=()=>{S.custom=S.custom.filter(x=>x.id!==id);save();closeSheet();renderLib();toast('Clip deleted')};
+}
+
+render();
+</script>
+
+</body>
+</html>

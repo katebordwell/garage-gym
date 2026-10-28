@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garage Gym PRD</title>
+<meta name="description" content="Product requirements for Garage Gym, a family workout planner built around a home gym.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Figtree:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F2F1EC;--ink:#17181C;--muted:#55575e;--line:#cfccc2;--accent:#FFC933;--card:#ffffff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 'Figtree',system-ui,sans-serif}
+header{background:var(--ink);color:var(--bg);padding:20px max(16px,env(safe-area-inset-left)) 0}
+.bar{max-width:880px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding-bottom:20px}
+.brand{font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;font-size:26px;letter-spacing:.04em;text-transform:uppercase;color:var(--bg);text-decoration:none}
+nav{display:flex;flex-wrap:wrap;gap:6px}
+nav a{color:var(--bg);font-weight:600;padding:10px 12px;min-height:44px;display:inline-flex;align-items:center}
+nav a.cta{border:2px solid var(--accent);color:var(--accent);border-radius:4px;text-decoration:none}
+.stripe{height:14px;background:repeating-linear-gradient(135deg,var(--accent) 0 14px,var(--ink) 14px 28px)}
+main{max-width:880px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left)) 80px}
+#doc h1{font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(44px,8vw,72px);line-height:.95;margin:0 0 8px;text-wrap:balance}
+#doc h1 + p{color:var(--muted);margin-top:0}
+#doc h2{font-family:'Big Shoulders Display','Arial Narrow',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(30px,5vw,40px);line-height:1;margin:56px 0 12px;padding-top:16px;border-top:3px solid var(--ink)}
+#doc h3{font-size:20px;margin:28px 0 6px}
+#doc p,#doc li{max-width:68ch}
+#doc ul,#doc ol{padding-left:22px}
+#doc li{margin:4px 0}
+#doc a{color:var(--ink);text-decoration-color:#b88a00;text-underline-offset:3px}
+.tbl{overflow-x:auto;margin:16px 0;background:var(--card);border:1.5px solid var(--line);border-radius:6px}
+#doc table{border-collapse:collapse;width:100%;font-size:15px}
+#doc th,#doc td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+#doc th{font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:#ebe9e1}
+#doc tr:last-child td{border-bottom:0}
+#doc input[type=checkbox]{margin-right:6px;accent-color:var(--ink)}
+#doc li.task{list-style:none;margin-left:-22px}
+.err{padding:16px;border:2px dashed var(--line);border-radius:6px}
+footer{max-width:880px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left)) 48px;color:var(--muted);font-size:14px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="brand" href="../promo/">Garage Gym</a>
+    <nav aria-label="Garage Gym"><a href="../promo/">About</a><a href="../PRD.md">Markdown</a><a class="cta" href="../">Try the demo</a></nav>
+  </div>
+  <div class="stripe" aria-hidden="true"></div>
+</header>
+<main><article id="doc">
+<h1>Garage Gym PRD</h1>
+<p>28 October 2026 · Kate Bordwell</p>
+<h2>Overview</h2>
+<p>Garage Gym helps a family of three plan each week's workouts around their sports, their goals and the kit in their home gym. It builds sessions from short follow-along video clips, shows what each new piece of kit would unlock, and spots when two people can train together. The hack day prototype is live at <a href="https://katebordwell.github.io/garage-gym/">katebordwell.github.io/garage-gym</a>.</p>
+<h2>Problem</h2>
+<p>There are too many workout options, scattered across too many places, so the week rarely gets planned well.</p>
+<ul>
+<li>Saved conditioning videos sit in Instagram with no way to find one by muscle group, length or kit.</li>
+<li>Runs live in Strava and turbo rides in Zwift, separate from strength and mobility work.</li>
+<li>The family is planning a garage gym for the new house, but there's no view of which kit would be used most.</li>
+<li>Three people train separately, and can't easily see when their sessions line up.</li>
+</ul>
+<h2>Users</h2>
+<p>Each person plans their own week, with their own preferences and their own look and feel.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>User</th>
+<th>Main sports</th>
+<th>Tools today</th>
+<th>Theme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kate</td>
+<td>Trail and hill running, conditioning</td>
+<td>Strava, Instagram saves</td>
+<td>Hello-world cats: retro 90s desktop</td>
+</tr>
+<tr>
+<td>Gary</td>
+<td>Cycling, indoor and outdoor</td>
+<td>Zwift on the turbo trainer</td>
+<td>2010-era club cycling: black, white, a pink stripe</td>
+</tr>
+<tr>
+<td>Lucy, 14</td>
+<td>Competitive gymnastics</td>
+<td>Club training set by her coach</td>
+<td>Grown-up preppy: florals, gingham, soft pink and sage</td>
+</tr>
+</tbody>
+</table></div>
+<p>Kate and Lucy sometimes enjoy training together, so shared sessions matter.</p>
+<h2>Goals and what good looks like</h2>
+<p>Good looks like a Sunday-night plan that takes minutes, sessions that fit the time and kit available, and a garage that fills up with kit that actually gets used.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Signal it's working</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Planning is quick</td>
+<td>Each person plans their week in under 10 minutes on a Sunday</td>
+</tr>
+<tr>
+<td>Sessions fit real life</td>
+<td>A session can be rebuilt for a new length or swapped on the day in a few taps</td>
+</tr>
+<tr>
+<td>Saved content gets used</td>
+<td>Clips from saved Instagram videos appear in planned sessions every week</td>
+</tr>
+<tr>
+<td>Kit buying is guided</td>
+<td>Each purchase unlocks videos people then do; nothing bought sits unused</td>
+</tr>
+<tr>
+<td>The family trains together</td>
+<td>Overlapping garage slots turn into shared sessions</td>
+</tr>
+<tr>
+<td>It feels personal</td>
+<td>Each person picks their own theme and wants to open the app</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Scope</h2>
+<p>The hack day prototype shows the whole journey, with the kit and content features fully working.</p>
+<p><strong>Working in the prototype</strong></p>
+<ul>
+<li>Weekly planner per person with real start times, editable entries, and "Start next week" with Repeat last week</li>
+<li>Session builder from tagged clips, with swap, shuffle, length changes and an honest time total (add a clip, repeat one, or finish early)</li>
+<li>Follow-along player; YouTube and Instagram clips open in their own apps</li>
+<li>Kit tracker with quantities and a weekly booking list per item</li>
+<li>Clash detection: kit in use by someone else, or not enough for everyone in a shared session</li>
+<li>Shopping list in three tiers (garage setup, big kit, small kit), ranked by family votes and benefit, with top-pick pictures, optional prices and a budget</li>
+<li>Train together when garage sessions overlap: one person leads, anyone can leave</li>
+<li>Points and rewards: equal points per session, together bonus, personal weekly goals, an opt-in race, Saturday dinner pick and a family kit jar</li>
+<li>Video library with quick capture to an inbox, tagging later, and More like this / Not again ratings</li>
+<li>Three personal themes and a 4-digit PIN per person</li>
+</ul>
+<p><strong>Shown as intent, not built</strong></p>
+<ul>
+<li>Strava, Zwift and Instagram connections</li>
+<li>Shared family data across devices and real sign-in; today everything saves in one browser</li>
+<li>Big-screen garage TV mode</li>
+</ul>
+<p><strong>Non-goals</strong></p>
+<ul>
+<li>Replacing Strava, Zwift or Lucy's club; Garage Gym is the family's planning and decision layer around them</li>
+<li>Coaching, training load or injury advice; Lucy's gymnastics training stays with her coach</li>
+<li>Hosting or downloading other people's videos; the app links to them</li>
+<li>Buying kit inside the app</li>
+</ul>
+<h2>Requirements</h2>
+<h3>Weekly planning</h3>
+<ul>
+<li>Each user plans Monday to Sunday, usually on a Sunday night.</li>
+<li>Entries have a day, a time slot (morning, lunchtime, evening) and a length.</li>
+<li>Entry types: garage session, run, turbo ride, outdoor ride, class or club, other.</li>
+<li>Garage sessions take a focus: core, legs and glutes, upper body, back, full body, mobility, power and cardio.</li>
+<li>Plans change on the day, so any entry can be edited, rebuilt or removed at the last minute.</li>
+</ul>
+<h3>Session builder</h3>
+<ol>
+<li>Warm-up clip for sessions of 10 minutes or more.</li>
+<li>Main clips matching the focus, filling the chosen time.</li>
+<li>Cool-down clip for sessions of 15 minutes or more.</li>
+</ol>
+<ul>
+<li>Only uses clips whose kit is all owned.</li>
+<li>Garden kit (the trampoline) is only used when the user opts in.</li>
+<li>Users can swap one clip, shuffle the lot, remove a clip or change the length by 5 minutes.</li>
+<li>Session length has no fixed limit; the user sets it.</li>
+</ul>
+<h3>Follow-along player</h3>
+<ul>
+<li>Plays clips in order with progress, back and next.</li>
+<li>YouTube clips embed; Instagram clips open in Instagram.</li>
+</ul>
+<h3>Kit tracker</h3>
+<ul>
+<li>Lists all kit by group, with where it lives (garage or garden).</li>
+<li>Ticking or unticking kit updates which videos are ready immediately.</li>
+<li>Owned kit takes specifics, such as weights in kg or band strengths, so clips can be matched more precisely later.</li>
+</ul>
+<h3>Shopping list</h3>
+<ul>
+<li>Ranks unowned kit by how many videos it would newly unlock, then by total videos it appears in.</li>
+<li>Shows example videos each item unlocks and their total minutes.</li>
+<li>Marking an item bought moves it to the kit list and reports what unlocked.</li>
+<li>Some items unlock features rather than videos, such as a garage TV.</li>
+</ul>
+<h3>Train together</h3>
+<ul>
+<li>When two or more people plan garage sessions in the same day and slot, the app offers a shared session.</li>
+<li>One person leads and picks the focus; the others join the same clips.</li>
+<li>Shared sessions prefer clips tagged as good to do together.</li>
+<li>Only the leader can change a shared session.</li>
+</ul>
+<h3>Family view</h3>
+<ul>
+<li>A week grid showing everyone's plans side by side, with shared sessions marked.</li>
+</ul>
+<h3>Video library</h3>
+<ul>
+<li>Browse by focus, and by ready, locked, from Instagram or together.</li>
+<li>Add a video by pasting a YouTube or Instagram link and tagging it.</li>
+<li>Quick add needs only a link, a title and a rough length. New clips land in an inbox and aren't used in sessions until tagged with at least one focus.</li>
+<li>Each person can rate a clip More like this (picked more often, along with clips from the same creator or of the same type) or Not again (never picked for them, or for a shared session they're in).</li>
+</ul>
+<h3>Kit bookings and clashes</h3>
+<ul>
+<li>Each owned item has a quantity, starting at 1. Each person needs their own piece unless the item is shareable, such as the TV.</li>
+<li>Every planned session books the kit its clips use; a Zwift ride books the bike.</li>
+<li>The week flags clashes, such as "Bike in use by Gary 06:30–07:30". Sessions leave out kit that is booked, or that there isn't enough of for everyone, and say what was left out.</li>
+</ul>
+<h3>Prioritising purchases</h3>
+<ul>
+<li>Each person votes Must have (+3), Want (+1) or Later (−2) on each item, from their own view only.</li>
+<li>Ranking adds benefit to votes: videos unlocked, clashes fixed, shared sessions opened up, and setup essentials such as flooring and lighting.</li>
+<li>Three tiers: garage setup, big equipment, small equipment. Extra sets, such as a second set of dumbbells, appear when they would fix a clash.</li>
+<li>Top priorities show as pictures; prices are optional estimates, with an optional budget.</li>
+</ul>
+<h3>Points and rewards</h3>
+<ul>
+<li>10 points per finished session, whatever its length; +5 for training together; +10 for hitting a personal weekly goal (a number of sessions each person sets).</li>
+<li>The race is opt-in each week. The top scorer picks Saturday dinner; only they can enter it.</li>
+<li>Everyone's points fill a family kit jar (100 points by default) towards the top-priority purchase. The jar keeps its points between weeks.</li>
+</ul>
+<h3>Weeks and changes</h3>
+<ul>
+<li>Any entry can be edited: day, time, length, type and focus. Moving a shared session takes that person out of it.</li>
+<li>Start next week resets ticks and points, then offers each person Repeat last week or a fresh start.</li>
+</ul>
+<h3>Access</h3>
+<ul>
+<li>Each person can only edit their own plan and votes, and only the leader can change a shared session.</li>
+<li>A 4-digit PIN per person stops others switching into their view on the same device. It is a convenience, not security.</li>
+</ul>
+<h2>Content model</h2>
+<p>The building block is a short follow-along clip, ideally 30 seconds to 5 minutes, like the Instagram videos Kate already saves. Short clips are what make sessions flexible.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source and link</td>
+<td>Instagram, @ktlyn_lifts</td>
+<td>Playing or opening the clip</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>Gymnastics core circuit</td>
+<td>Display</td>
+</tr>
+<tr>
+<td>Length (min)</td>
+<td>2, marked approximate if unchecked</td>
+<td>Filling the session's time</td>
+</tr>
+<tr>
+<td>Focus</td>
+<td>Core</td>
+<td>Matching the session's focus</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Warm-up, strength, core, cardio, mobility, recovery, skill</td>
+<td>Ordering warm-up, main and cool-down</td>
+</tr>
+<tr>
+<td>Kit needed</td>
+<td>Mat</td>
+<td>Ready or locked, shopping list ranking</td>
+</tr>
+<tr>
+<td>Together</td>
+<td>Yes</td>
+<td>Shared sessions</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Garden</td>
+<td>Leaving out garden kit unless chosen</td>
+</tr>
+</tbody>
+</table></div>
+<p>The prototype starts with 33 clips: 5 of Kate's Instagram saves, tagged from screenshots, and 28 YouTube follow-alongs. Sources are mixed on purpose, since tagged content Kate doesn't know about yet is part of the value.</p>
+<h2>Platforms and design</h2>
+<p>Phone first, then laptop and iPad, and eventually a TV in the garage.</p>
+<ul>
+<li><strong>Phone:</strong> Sunday planning and following clips with the phone propped up.</li>
+<li><strong>Laptop and iPad:</strong> a bigger screen for follow-alongs in the garage now.</li>
+<li><strong>Garage TV:</strong> later, a big-screen mode that plays the session hands-free. The TV is on the shopping list.</li>
+</ul>
+<p>Each user picks a theme, and switching user switches the whole app.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>Look</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kate: hello-world cats</td>
+<td>90s desktop windows, teal dotted background, pixel fonts, pink and yellow accents</td>
+<td>Matches the hack day cat site</td>
+</tr>
+<tr>
+<td>Gary: club cycling</td>
+<td>Black, white, one pink stripe, condensed caps, serif italic</td>
+<td>Inspired by 2010-era cycling style; no third-party logos or branding</td>
+</tr>
+<tr>
+<td>Lucy: grown-up preppy</td>
+<td>Ditsy florals, gingham, soft pink and sage, serif italic headings</td>
+<td>Lucy is 14, so florals over smileys and nothing babyish</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Integrations and data</h2>
+<p>The biggest build after the hack day is shared data, so all three phones see the same family week.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Integration</th>
+<th>What it would do</th>
+<th>Constraint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Strava</td>
+<td>Pull Kate's runs and Gary's outdoor rides into the week</td>
+<td>Needs each person to sign in and a server to hold access</td>
+</tr>
+<tr>
+<td>Zwift</td>
+<td>Pull Gary's turbo sessions into the week</td>
+<td>Same sign-in and server need as Strava</td>
+</tr>
+<tr>
+<td>Instagram saved posts</td>
+<td>Bring in saved videos automatically</td>
+<td>Instagram doesn't let other apps read saved posts, so clips are added by pasting links or screenshots</td>
+</tr>
+<tr>
+<td>YouTube</td>
+<td>Search and embed short follow-alongs</td>
+<td>Some creators block embedding; the app falls back to opening YouTube</td>
+</tr>
+<tr>
+<td>Shared family data</td>
+<td>Same plans, kit and shared sessions on every device</td>
+<td>The prototype saves to each browser only; needs a small backend and family sign-in</td>
+</tr>
+</tbody>
+</table></div>
+<p>Plans include a 14-year-old's schedule, so family data stays private to the family and isn't shared publicly.</p>
+<h2>Risks and open questions</h2>
+<p><strong>Risks</strong></p>
+<ul>
+<li>Getting Instagram saves in by hand may feel like a chore, so the app's value depends on how easy adding a clip is.</li>
+<li>Clip lengths found online are often unchecked, so sessions may run long or short.</li>
+<li>Video links break or block embedding over time.</li>
+<li>Kit is matched by type, not weight or resistance, so a clip may need heavier kit than the family owns.</li>
+</ul>
+<p><strong>Open questions</strong></p>
+<ul>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> How should Lucy's gymnastics training, set by her coach, shape what the app suggests for her?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Should the app track completed sessions, or is planning enough?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Do we have a barbell, or were the barbells the hand weights?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Which details matter per kit item: dumbbell weights, band strengths, trampoline size?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Should the shopping list include prices and a budget?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Who can see whose plans: everyone, or only shared slots?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> How should family sign-in work when one of us is 14?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Does competition suit us, or would a family-only jar and personal goals feel better?</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Should one item be shareable by taking turns, rather than needing one each?</li>
+</ul>
+<h2>Backlog</h2>
+<p>The next build should make planning lighter and clip capture effortless before adding anything new. Items marked Now are next in line; Later items need sign-in, shared data or integrations first.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Now</td>
+<td>Favourite sessions, e.g. "Kate's 15-minute core" or "Gary's post-ride mobility"</td>
+<td>Reuse a session in one tap instead of rebuilding it</td>
+</tr>
+<tr>
+<td>Now</td>
+<td>Starting points: build around a saved clip, repeat a favourite, or surprise me</td>
+<td>Fewer decisions on a Sunday night</td>
+</tr>
+<tr>
+<td>Now</td>
+<td>Take turns with kit, e.g. "one kettlebell, take turns"</td>
+<td>Shared sessions are thin when we only own one of everything</td>
+</tr>
+<tr>
+<td>Now</td>
+<td>"Save for when we have this kit"</td>
+<td>Shopping list reflects clips we actually want, not just clip counts</td>
+</tr>
+<tr>
+<td>Now</td>
+<td>Real links and checked lengths for the starter clips</td>
+<td>Instagram entries point to profiles; some lengths are estimates</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>"I only have 10 minutes" quick session</td>
+<td>Fits a changed day without replanning</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>Invitations based on when people are free, e.g. "Fancy 15 minutes together on Thursday?"</td>
+<td>Makes training together an invitation, not just a clash</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>Train alongside: same time, different focus</td>
+<td>Kate and Lucy can share the garage without the same workout</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>Different home screen per person</td>
+<td>Each person opens the app for a different reason; test first</td>
+</tr>
+<tr>
+<td>Later</td>
+<td>Family sign-in and private shared storage across devices</td>
+<td>Needed for real use; must work for a 14-year-old</td>
+</tr>
+<tr>
+<td>Later</td>
+<td>Strava and Zwift sync</td>
+<td>Runs and rides appear without retyping</td>
+</tr>
+<tr>
+<td>Later</td>
+<td>Share to Garage Gym from the Instagram app</td>
+<td>Capture a clip at the moment it's saved</td>
+</tr>
+<tr>
+<td>Later</td>
+<td>Big-screen garage TV mode</td>
+<td>Hands-free follow-alongs once the TV is bought</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Research priorities</h2>
+<p>The most valuable next step is watching Gary and Lucy plan a real week, before building more on their behalf.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Question</th>
+<th>Method</th>
+<th>With</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Now</td>
+<td>Where do people hesitate when planning a real week?</td>
+<td>Each plans next week in the app while thinking aloud</td>
+<td>Gary, Lucy, Kate</td>
+</tr>
+<tr>
+<td>Now</td>
+<td>What would each of us open the app for?</td>
+<td>Short separate conversations</td>
+<td>Gary, Lucy</td>
+</tr>
+<tr>
+<td>Now</td>
+<td>How should the app sit alongside coach-led gymnastics without feeling like another coach?</td>
+<td>Conversation, led by what Lucy enjoys</td>
+<td>Lucy</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>Does adding and tagging clips stick?</td>
+<td>Two weeks of real use, counting clips added and tagged</td>
+<td>Kate</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>Does competition help or add pressure?</td>
+<td>Two weeks with the race, two with jar and goals only, then a debrief</td>
+<td>Family</td>
+</tr>
+<tr>
+<td>Next</td>
+<td>Do we trust the shopping list's ranking?</td>
+<td>Rank the top 10 ourselves, then compare with the app</td>
+<td>Family</td>
+</tr>
+<tr>
+<td>Later</td>
+<td>When and why do we train together?</td>
+<td>Diary of shared sessions over a month</td>
+<td>Kate, Lucy</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Hack day demo script</h2>
+<p>Two minutes, starting on Kate's Week tab. The story: one family, three sports, a garage gym to fill, built in a morning with Claude.</p>
+<ol>
+<li><strong>Hook (15 sec):</strong> we're moving and planning a garage gym. Three people, three sports, workouts scattered across Instagram, Strava and Zwift, and no idea what to buy first.</li>
+<li><strong>Plan the week (25 sec):</strong> show runs, a Zwift ride and garage sessions with real times. Point out the clash: Kate wants the bike at 07:00 but Gary has it until 07:30. Open a garage session and tap Shuffle all.</li>
+<li><strong>Train together (20 sec):</strong> tap the Lucy banner and choose Lucy to lead. We only own one of everything, so it leaves out kit we'd have to share, which tells us what to buy.</li>
+<li><strong>Shop (30 sec):</strong> show the Top priorities pictures, the votes and the reasons behind each ranking. Tap We bought it! on the kettlebell: 3 new videos unlocked.</li>
+<li><strong>Rewards (20 sec):</strong> mark a session done for +20 points, then open Rewards to see the race chart. The winner picks Saturday dinner and every point fills the kit jar.</li>
+<li><strong>Ending (10 sec):</strong> switch to Gary, then Lucy, so the whole app changes style. Same app, three personalities.</li>
+</ol>
+<p><strong>Before going on</strong></p>
+<ul>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Tap Reset demo so everything starts fresh</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Don't set PINs; if switching asks for one, tap Skip for now</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Don't play videos live, as they open YouTube in a new tab; use Mark done for points</li>
+<li class="task"><input type="checkbox" disabled aria-label="Open item"> Optional: set the exercise mat to 2 in Kit so the shared session isn't thin</li>
+</ul>
+</article></main>
+<footer>Garage Gym · Made at hack day with Claude · <a href="https://github.com/katebordwell/garage-gym/blob/main/PRD.md" style="color:inherit">View on GitHub</a></footer>
+</body>
+</html>

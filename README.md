@@ -6,6 +6,8 @@ A family workout planner built around our garage gym kit, made at hack day with 
 
 **Promo page:** https://katebordwell.github.io/garage-gym/promo/
 
+**PRD:** https://katebordwell.github.io/garage-gym/prd/ ([markdown](PRD.md))
+
 - Plan each person's week with real times, including runs, rides and classes
 - Build garage sessions from short follow-along clips that match the kit we own
 - Spot kit clashes and train together when sessions overlap

@@ -79,6 +79,13 @@ body[data-user="gary"] .who button{color:#fff;letter-spacing:.08em;text-transfor
 body[data-user="lucy"] .brand .name{font-style:italic}
 body[data-user="lucy"] .brand .name::after{content:" ✿";color:#e3c24e;font-style:normal;font-size:.7em}
 .hdr-in{display:contents}
+.hcat{display:none}
+body[data-user="kate"] .hcat{display:block;width:78px;height:78px;filter:drop-shadow(3px 3px 0 #1d1838)}
+.hcat .catsvg{width:100%;height:100%}
+body[data-user="kate"] .entry .ico{width:48px;height:48px;padding:3px;background:#fff8dc;border:2px solid #1d1838;border-radius:6px}
+.entry .ico .catsvg{width:100%;height:100%}
+.restcat{display:flex;align-items:center;gap:10px}
+.restcat .catsvg{width:56px;height:56px;flex:none}
 #overlaps{display:grid;gap:12px}
 #overlaps:empty{display:none}
 body[data-user="gary"] .wrap{padding-top:22px}
@@ -345,6 +352,7 @@ body[data-user="kate"] footer{color:#e6fffb;font-family:var(--label);font-size:1
 <body data-user="kate">
 <header class="top"><div class="hdr-in">
   <div class="brand"><p class="name" id="brandName">garage_gym.exe</p><div class="tag" id="brandTag"></div></div>
+  <div class="hcat" id="hcat" aria-hidden="true"></div>
   <div class="who" role="group" aria-label="Who's planning?" id="who"></div>
 </div></header>
 
@@ -660,12 +668,58 @@ function swapCandidates(ids,idx,focus,opts){
   return videos().filter(v=>!v.inbox&&ready(v)&&(opts.outdoor||!v.outdoor)&&(!opts.can||v.kit.every(opts.can))&&!(opts.members||[]).some(m=>rateOf(m,v.id)==='nope')&&!ids.includes(v.id)&&(v.focus.includes(focus)||v.type===cur.type));
 }
 
+/* ===================== SPORTY CATS (Kate's theme) ===================== */
+const CI='#1d1838',CF='#a3a9b8',CS='#6c7385',CB='#e3e6ee',CY='#ffd23f',CP='#ff8fb1';
+function catHead(x,y,r,o={}){
+  const ear=sx=>`<path d="M${sx*r*.95} ${-r*.2}L${sx*r*.8} ${-r*1.3}L${sx*r*.15} ${-r*.85}Z" fill="${CF}" stroke="${CI}" stroke-width="2" stroke-linejoin="round"/><path d="M${sx*r*.72} ${-r*.45}L${sx*r*.68} ${-r*1}L${sx*r*.35} ${-r*.75}Z" fill="${CP}"/>`;
+  const eyes=o.sleep?`<path d="M${-r*.55} ${-r*.05}q${r*.17} ${r*.18} ${r*.34} 0M${r*.21} ${-r*.05}q${r*.17} ${r*.18} ${r*.34} 0" stroke="${CI}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`
+    :`<circle cx="${-r*.38}" cy="${-r*.05}" r="${r*.15}" fill="${CI}"/><circle cx="${r*.38}" cy="${-r*.05}" r="${r*.15}" fill="${CI}"/>`;
+  return `<g transform="translate(${x} ${y})">${ear(-1)}${ear(1)}<circle r="${r}" fill="${CF}" stroke="${CI}" stroke-width="2"/>
+    <path d="M${-r*.28} ${-r*.95}v${r*.35}M0 ${-r}v${r*.4}M${r*.28} ${-r*.95}v${r*.35}" stroke="${CS}" stroke-width="1.6" stroke-linecap="round"/>
+    ${o.band?`<path d="M${-r*.97} ${-r*.42}Q0 ${-r*.8} ${r*.97} ${-r*.42}" stroke="${CP}" stroke-width="${r*.3}" fill="none"/>`:''}
+    ${o.helmet?`<path d="M${-r*1.05} ${-r*.3}A${r*1.05} ${r*1.05} 0 0 1 ${r*1.05} ${-r*.3}Z" fill="${CY}" stroke="${CI}" stroke-width="2" stroke-linejoin="round"/>`:''}
+    ${eyes}<path d="M${-r*.13} ${r*.25}h${r*.26}l${-r*.13} ${r*.15}z" fill="${CP}"/></g>`;
+}
+const limb=(d,w=6)=>`<path d="${d}" stroke="${CI}" stroke-width="${w+3.5}" stroke-linecap="round" fill="none"/><path d="${d}" stroke="${CF}" stroke-width="${w}" stroke-linecap="round" fill="none"/>`;
+const CATS={
+  lift:()=>`<path d="M7 12H57" stroke="${CI}" stroke-width="3" stroke-linecap="round"/>
+    <rect x="4" y="4" width="7" height="16" rx="2" fill="${CY}" stroke="${CI}" stroke-width="2"/><rect x="53" y="4" width="7" height="16" rx="2" fill="${CY}" stroke="${CI}" stroke-width="2"/>
+    ${limb('M24 42L18 14')}${limb('M40 42L46 14')}
+    <ellipse cx="32" cy="51" rx="13" ry="10" fill="${CF}" stroke="${CI}" stroke-width="2"/><ellipse cx="32" cy="53" rx="6" ry="6.5" fill="${CB}"/>
+    <ellipse cx="25" cy="61" rx="5" ry="2.8" fill="${CF}" stroke="${CI}" stroke-width="2"/><ellipse cx="39" cy="61" rx="5" ry="2.8" fill="${CF}" stroke="${CI}" stroke-width="2"/>
+    ${catHead(32,33,11)}`,
+  run:()=>`<path d="M2 30h9M0 38h10M3 46h8" stroke="${CI}" stroke-width="2.2" stroke-linecap="round"/>
+    ${limb('M20 50C12 46 12 36 16 30',5)}
+    ${limb('M25 53L17 61')}${limb('M37 53L45 59')}${limb('M24 41L15 47',5)}${limb('M38 39L46 33',5)}
+    <ellipse cx="31" cy="46" rx="11" ry="9" fill="${CF}" stroke="${CI}" stroke-width="2" transform="rotate(-15 31 46)"/>
+    ${catHead(35,27,11,{band:true})}`,
+  bike:()=>`<circle cx="13" cy="51" r="10" fill="none" stroke="${CI}" stroke-width="2.6"/><circle cx="51" cy="51" r="10" fill="none" stroke="${CI}" stroke-width="2.6"/>
+    <path d="M13 51L26 51L39 37L51 51M26 51L21 37M17 37h8M39 37L37 30h5" fill="none" stroke="${CY}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M13 51L26 51L39 37L51 51M26 51L21 37M39 37L37 30" fill="none" stroke="${CI}" stroke-width="1.2" stroke-linejoin="round"/>
+    ${limb('M26 36L39 31',5)}${limb('M24 40L27 50',5)}
+    <ellipse cx="25" cy="33" rx="8" ry="7" fill="${CF}" stroke="${CI}" stroke-width="2"/>
+    ${catHead(33,20,9,{helmet:true})}`,
+  gym:()=>`<path d="M6 63H58" stroke="${CI}" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M10 10l2 4 4 1-4 1-2 4-2-4-4-1 4-1zM54 22l1.5 3 3 1-3 1-1.5 3-1.5-3-3-1 3-1z" fill="${CY}" stroke="${CI}" stroke-width="1.2" stroke-linejoin="round"/>
+    ${limb('M29 18L21 5')}${limb('M35 18L43 5')}${limb('M26 40L20 61')}${limb('M38 40L44 61')}
+    <rect x="25" y="15" width="14" height="25" rx="7" fill="${CF}" stroke="${CI}" stroke-width="2"/><ellipse cx="32" cy="27" rx="4" ry="8" fill="${CB}"/>
+    ${catHead(32,49,10)}`,
+  rest:()=>`<text x="44" y="17" font-family="VT323,monospace" font-size="14" fill="${CI}">z</text><text x="51" y="10" font-family="VT323,monospace" font-size="11" fill="${CI}">z</text>
+    ${limb('M54 52C62 50 62 42 56 40',4)}
+    <rect x="12" y="32" width="46" height="24" rx="12" fill="${CF}" stroke="${CI}" stroke-width="2"/>
+    <path d="M34 34v8M42 34v8M50 36v6" stroke="${CS}" stroke-width="2" stroke-linecap="round"/>
+    ${catHead(20,34,11,{sleep:true})}`
+};
+const CAT_OF={gym:'lift',run:'run',zwift:'bike',ride:'bike',class:'gym',other:'run'};
+const catSvg=k=>`<svg viewBox="0 0 64 64" class="catsvg" aria-hidden="true">${(CATS[k]||CATS.run)()}</svg>`;
+
 /* ===================== RENDER: SHELL ===================== */
 function renderShell(){
   const u=USERS[S.user];
   document.body.dataset.user=S.user;
   $('#brandName').textContent=u.brand;
   $('#brandTag').textContent=u.tag;
+  $('#hcat').innerHTML=S.user==='kate'?catSvg('lift'):'';
   document.title=u.brand+' · '+u.name;
   $('#who').innerHTML=Object.entries(USERS).map(([id,x])=>`<button type="button" data-user="${id}" aria-pressed="${id===S.user}">${x.name}${S.pins&&S.pins[id]&&id!==S.user?'<svg class="lk" viewBox="0 0 12 12" aria-label=" (locked)"><rect x="2" y="5" width="8" height="6" rx="1.2"/><path d="M4 5V3.6a2 2 0 0 1 4 0V5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>':''}</button>`).join('');
   const tabs=[['week','Week','🗓'],['family','Family','👪'],['rewards','Rewards','🏆'],['kit','Kit','🧰'],['shop','Shop','🛒'],['lib','Library','▶']];
@@ -677,7 +731,7 @@ function render(){renderShell();({week:renderWeek,family:renderFamily,rewards:re
 /* ===================== WEEK ===================== */
 function entryLine(e,u){
   const k=KINDS[e.kind]; const sh=shOf(e,u);
-  const ico=S.user==='kate'?k.kate:k.ico;
+  const ico=S.user==='kate'?catSvg(CAT_OF[e.kind]||'run'):k.ico;
   let title,sub;
   if(e.kind==='gym'){
     const f=sh?sh.focus:e.focus;
@@ -718,7 +772,7 @@ function renderWeek(){
   $('#days').innerHTML=DAYS.map((d,i)=>{
     const es=S.plan[u].filter(e=>e.day===i).sort((a,b)=>toMin(tOf(a))-toMin(tOf(b)));
     return `<article class="card day"><div class="card-bar"><span class="t">${S.user==='kate'?DAYS_LONG[i].toLowerCase()+'.day':DAYS_LONG[i]}</span><span class="btns"><i></i><i></i><i></i></span></div>
-      <div class="card-body">${es.map(e=>entryLine(e,u)).join('')||'<p class="empty">Rest day.</p>'}
+      <div class="card-body">${es.map(e=>entryLine(e,u)).join('')||(S.user==='kate'?`<p class="empty restcat">${catSvg('rest')}<span>Rest day. Nap mode.</span></p>`:'<p class="empty">Rest day.</p>')}
       <div class="add-line"><span></span><button class="btn sm" type="button" data-add="${i}">+ Add</button></div></div></article>`;
   }).join('');
 }
